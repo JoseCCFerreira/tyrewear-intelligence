@@ -1,9 +1,9 @@
 {
   "project": "TyreWear Intelligence",
-  "created_at": "2026-05-05T21:55:45",
+  "created_at": "2026-05-05T22:16:44",
   "repository": {
-    "git_status": "M requirements.txt\n?? app.py",
-    "latest_commit": "0775fc6 docs: refresh repository snapshot",
+    "git_status": "M snapshots/project_snapshot.json\n M snapshots/project_snapshot.md",
+    "latest_commit": "2507c8b feat: add full tyre analytics pipeline",
     "remote": "origin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)\norigin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)"
   },
   "files": [
@@ -17,42 +17,91 @@
     },
     {
       "path": "technical_support.html",
-      "size_bytes": 20388
+      "size_bytes": 20737
     },
     {
       "path": "README.md",
-      "size_bytes": 1361
+      "size_bytes": 1780
     },
     {
       "path": "requirements.txt",
-      "size_bytes": 86
+      "size_bytes": 111
+    },
+    {
+      "path": "app.py",
+      "size_bytes": 11385
+    },
+    {
+      "path": "scripts/generate_tyre_data.py",
+      "size_bytes": 7430
+    },
+    {
+      "path": "scripts/analyze_tyre_data.py",
+      "size_bytes": 12848
+    },
+    {
+      "path": "scripts/run_full_pipeline.py",
+      "size_bytes": 543
     },
     {
       "path": "scripts/test_deep_learning.py",
-      "size_bytes": 3647
+      "size_bytes": 5022
     },
     {
       "path": "scripts/create_snapshot.py",
-      "size_bytes": 2649
+      "size_bytes": 3186
+    },
+    {
+      "path": "data/raw/tyrewear_europe_raw.csv",
+      "size_bytes": 3547570
+    },
+    {
+      "path": "data/processed/tyrewear_europe_clean.csv",
+      "size_bytes": 3529339
+    },
+    {
+      "path": "data/processed/tyrewear_europe_monthly_resampled.csv",
+      "size_bytes": 62226
+    },
+    {
+      "path": "data/processed/tyrewear_europe_annual_country.csv",
+      "size_bytes": 5005
+    },
+    {
+      "path": "data/outputs/hypothesis_tests.csv",
+      "size_bytes": 542
+    },
+    {
+      "path": "data/outputs/analysis_summary.json",
+      "size_bytes": 2469
+    },
+    {
+      "path": "data/outputs/tyre_clusters.csv",
+      "size_bytes": 1397458
+    },
+    {
+      "path": "data/outputs/cluster_summary.csv",
+      "size_bytes": 276
     }
   ],
   "deep_learning": {
     "dataset": {
-      "rows": 420,
-      "features": 7,
-      "target": "standardized useful_life_km"
+      "source": "data/processed/tyrewear_europe_clean.csv",
+      "rows": 18000,
+      "features": 14,
+      "target": "standardized projected_life_km"
     },
     "tests": [
       {
         "framework": "pytorch",
         "version": "2.2.2",
-        "final_mse": 0.022102,
+        "final_mse": 0.016865,
         "status": "passed"
       },
       {
         "framework": "tensorflow",
         "version": "2.16.1",
-        "final_mse": 0.024933,
+        "final_mse": 0.004775,
         "status": "passed"
       }
     ]
