@@ -55,9 +55,30 @@ snapshots/deep_learning_test_results.json
 
 ## Create Snapshot
 
+Run the full data, statistics, ML, deep learning and snapshot pipeline:
+
+```bash
+python3 scripts/run_full_pipeline.py
+```
+
 ```bash
 python3 scripts/create_snapshot.py
 ```
+
+## Streamlit Results App
+
+```bash
+streamlit run app.py --server.port 8580
+```
+
+Then open:
+
+```text
+http://localhost:8580
+```
+
+The app shows raw data, cleaning, distributions, regional/country time trends, hypothesis tests,
+classic ML, clusters, PyTorch/TensorFlow results and generated outputs.
 
 Outputs:
 

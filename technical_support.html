@@ -383,30 +383,27 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# 2. Load transactional database
-python scripts/load_sqlite.py
+# 2. Run full current pipeline
+python3 scripts/run_full_pipeline.py
 
-# 3. Build analytics layer
-python scripts/build_duckdb.py
-dbt build
+# 3. Start Streamlit results dashboard
+streamlit run app.py --server.port 8580
 
-# 4. Run statistics and ML
-python scripts/statistics_tests.py
-python scripts/train_models.py
-
-# 5. Start dashboard
-streamlit run app.py</code></pre>
+# 4. Serve static HTML pages
+python3 -m http.server 8570</code></pre>
           </div>
           <table class="doc-table">
             <thead>
               <tr><th>Validation</th><th>Expected result</th></tr>
             </thead>
             <tbody>
-              <tr><td>Database exists</td><td>SQLite and DuckDB files are created.</td></tr>
-              <tr><td>dbt build</td><td>All models and tests pass.</td></tr>
-              <tr><td>Statistics output</td><td>CSV or JSON with tests, p-values and decisions.</td></tr>
-              <tr><td>ML output</td><td>Metrics file with train/test performance.</td></tr>
-              <tr><td>Dashboard</td><td>Streamlit opens with filters, charts and recommendations.</td></tr>
+              <tr><td>Raw data</td><td><code>data/raw/tyrewear_europe_raw.csv</code> exists with dirty input records.</td></tr>
+              <tr><td>Clean data</td><td><code>data/processed/tyrewear_europe_clean.csv</code> exists after deduplication and imputation.</td></tr>
+              <tr><td>Resampling</td><td>Monthly and annual country/region outputs are generated.</td></tr>
+              <tr><td>Statistics output</td><td><code>hypothesis_tests.csv</code> contains p-values and decisions.</td></tr>
+              <tr><td>ML output</td><td><code>analysis_summary.json</code> contains regression and classification metrics.</td></tr>
+              <tr><td>Deep learning</td><td><code>deep_learning_test_results.json</code> contains PyTorch and TensorFlow MSE.</td></tr>
+              <tr><td>Dashboard</td><td>Streamlit opens with filters, charts, clusters and outputs.</td></tr>
             </tbody>
           </table>
         </section>

@@ -31,8 +31,20 @@ def main() -> None:
         "technical_support.html",
         "README.md",
         "requirements.txt",
+        "app.py",
+        "scripts/generate_tyre_data.py",
+        "scripts/analyze_tyre_data.py",
+        "scripts/run_full_pipeline.py",
         "scripts/test_deep_learning.py",
         "scripts/create_snapshot.py",
+        "data/raw/tyrewear_europe_raw.csv",
+        "data/processed/tyrewear_europe_clean.csv",
+        "data/processed/tyrewear_europe_monthly_resampled.csv",
+        "data/processed/tyrewear_europe_annual_country.csv",
+        "data/outputs/hypothesis_tests.csv",
+        "data/outputs/analysis_summary.json",
+        "data/outputs/tyre_clusters.csv",
+        "data/outputs/cluster_summary.csv",
     ]
     deep_learning_path = SNAPSHOT_DIR / "deep_learning_test_results.json"
     deep_learning_results = {}

@@ -1,0 +1,11 @@
+country,europe_region,high_risk_share,avg_wear_rate,avg_cost_per_km
+Sweden,Northern Europe,71.42,0.2075,0.0047
+Germany,Western Europe,71.19,0.2065,0.0047
+Norway,Northern Europe,71.08,0.21,0.0048
+France,Western Europe,69.96,0.2038,0.0046
+Poland,Eastern Europe,69.35,0.2037,0.0046
+Czechia,Eastern Europe,68.83,0.2017,0.0046
+Italy,Southern Europe,68.26,0.1963,0.0044
+Netherlands,Western Europe,68.26,0.2029,0.0046
+Portugal,Southern Europe,65.18,0.1938,0.0044
+Spain,Southern Europe,63.52,0.1896,0.0043

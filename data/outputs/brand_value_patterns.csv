@@ -1,0 +1,9 @@
+brand,avg_projected_life_km,avg_cost_per_km,avg_wear_rate,high_risk_share
+Michelin,34883.9956,0.0045,0.1952,66.81
+Hankook,32886.2089,0.0045,0.2059,70.38
+Goodyear,33713.007,0.0045,0.2009,70.39
+Nokian,34123.6996,0.0045,0.1992,66.68
+Yokohama,32640.7021,0.0045,0.2076,69.17
+Continental,34386.1806,0.0046,0.1978,66.9
+Bridgestone,33567.7167,0.0046,0.2021,69.53
+Pirelli,33277.5423,0.0046,0.204,69.96

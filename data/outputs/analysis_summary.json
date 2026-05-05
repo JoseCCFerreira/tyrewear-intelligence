@@ -1,0 +1,95 @@
+{
+  "cleaning": {
+    "raw_rows": 18120,
+    "clean_rows": 18000,
+    "duplicates_removed": 120,
+    "missing_values_before_imputation": {
+      "tread_depth_mm": 216,
+      "wear_rate_mm_per_1000km": 216,
+      "price_eur": 287,
+      "wet_grip_score": 216
+    },
+    "countries": 10,
+    "regions": 4,
+    "date_min": "2019-01-01",
+    "date_max": "2025-12-31"
+  },
+  "hypothesis_tests": [
+    {
+      "test": "Shapiro-Wilk",
+      "question": "Is wear rate normally distributed?",
+      "statistic": 0.97403,
+      "p_value": 3.1438802e-29,
+      "decision": "non-normal"
+    },
+    {
+      "test": "Welch t-test",
+      "question": "Summer vs winter wear rate mean",
+      "statistic": 1.20503,
+      "p_value": 0.22822224,
+      "decision": "not different"
+    },
+    {
+      "test": "Mann-Whitney U",
+      "question": "Summer vs winter wear distribution",
+      "statistic": 16624652.0,
+      "p_value": 0.20040468,
+      "decision": "not different"
+    },
+    {
+      "test": "ANOVA",
+      "question": "Wear rate mean across European regions",
+      "statistic": 120.55089,
+      "p_value": 2.6593961e-77,
+      "decision": "different"
+    },
+    {
+      "test": "Kruskal-Wallis",
+      "question": "Wear rate distribution across European regions",
+      "statistic": 359.69769,
+      "p_value": 1.18509e-77,
+      "decision": "different"
+    },
+    {
+      "test": "Welch t-test",
+      "question": "Premium vs value brand projected life",
+      "statistic": 8.89032,
+      "p_value": 6.8708242e-19,
+      "decision": "different"
+    }
+  ],
+  "machine_learning": {
+    "classification_high_wear_risk": {
+      "accuracy": 0.9806,
+      "f1": 0.9859,
+      "roc_auc": 0.9985
+    },
+    "regression_projected_life_km": {
+      "mae": 2798.83,
+      "r2": 0.7541
+    }
+  },
+  "patterns": {
+    "strongest_correlations_with_wear_rate": {
+      "projected_life_km": 0.9153,
+      "cost_per_km": 0.7658,
+      "road_roughness": 0.2158,
+      "tread_depth_mm": 0.1677,
+      "rain_index": 0.1595
+    },
+    "highest_risk_country": {
+      "country": "Sweden",
+      "europe_region": "Northern Europe",
+      "high_risk_share": 71.42,
+      "avg_wear_rate": 0.20750220055710306,
+      "avg_cost_per_km": 0.00465142061281337
+    },
+    "best_value_brand": {
+      "brand": "Michelin",
+      "avg_projected_life_km": 34883.995638901004,
+      "avg_cost_per_km": 0.004520902747492368,
+      "avg_wear_rate": 0.1952212821631051,
+      "high_risk_share": 66.81
+    }
+  }
+}

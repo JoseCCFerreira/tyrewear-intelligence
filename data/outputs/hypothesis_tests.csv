@@ -1,0 +1,7 @@
+test,question,statistic,p_value,decision
+Shapiro-Wilk,Is wear rate normally distributed?,0.97403,3.1438802e-29,non-normal
+Welch t-test,Summer vs winter wear rate mean,1.20503,0.22822224,not different
+Mann-Whitney U,Summer vs winter wear distribution,16624652.0,0.20040468,not different
+ANOVA,Wear rate mean across European regions,120.55089,2.6593961e-77,different
+Kruskal-Wallis,Wear rate distribution across European regions,359.69769,1.18509e-77,different
+Welch t-test,Premium vs value brand projected life,8.89032,6.8708242e-19,different

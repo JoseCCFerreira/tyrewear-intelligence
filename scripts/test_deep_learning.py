@@ -5,11 +5,13 @@ import random
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 SNAPSHOT_DIR = ROOT_DIR / "snapshots"
 OUTPUT_PATH = SNAPSHOT_DIR / "deep_learning_test_results.json"
+PROCESSED_PATH = ROOT_DIR / "data" / "processed" / "tyrewear_europe_clean.csv"
 
 
 def build_synthetic_tyre_data(rows: int = 420) -> tuple[np.ndarray, np.ndarray]:
@@ -48,6 +50,45 @@ def build_synthetic_tyre_data(rows: int = 420) -> tuple[np.ndarray, np.ndarray]:
     features = (features - features.mean(axis=0)) / features.std(axis=0)
     target = ((useful_life_km - useful_life_km.mean()) / useful_life_km.std()).reshape(-1, 1)
     return features, target.astype("float32")
+
+
+def build_pipeline_tyre_data() -> tuple[np.ndarray, np.ndarray, dict]:
+    if not PROCESSED_PATH.exists():
+        features, target = build_synthetic_tyre_data()
+        return features, target, {
+            "source": "synthetic_smoke_dataset",
+            "rows": int(features.shape[0]),
+            "features": int(features.shape[1]),
+            "target": "standardized useful_life_km",
+        }
+    df = pd.read_csv(PROCESSED_PATH)
+    feature_cols = [
+        "monthly_km",
+        "cumulative_km",
+        "tyre_age_months",
+        "tread_depth_mm",
+        "wear_rate_mm_per_1000km",
+        "price_eur",
+        "cost_per_km",
+        "wet_grip_score",
+        "energy_efficiency_score",
+        "noise_db",
+        "road_roughness",
+        "avg_temp_c",
+        "rain_index",
+        "season_match",
+    ]
+    work = df[feature_cols + ["projected_life_km"]].dropna()
+    features = work[feature_cols].to_numpy(dtype="float32")
+    target_raw = work["projected_life_km"].to_numpy(dtype="float32").reshape(-1, 1)
+    features = (features - features.mean(axis=0)) / features.std(axis=0)
+    target = (target_raw - target_raw.mean()) / target_raw.std()
+    return features, target.astype("float32"), {
+        "source": "data/processed/tyrewear_europe_clean.csv",
+        "rows": int(features.shape[0]),
+        "features": int(features.shape[1]),
+        "target": "standardized projected_life_km",
+    }
 
 
 def train_pytorch(features: np.ndarray, target: np.ndarray) -> dict:
@@ -103,13 +144,9 @@ def main() -> None:
     random.seed(42)
     np.random.seed(42)
     SNAPSHOT_DIR.mkdir(exist_ok=True)
-    features, target = build_synthetic_tyre_data()
+    features, target, dataset = build_pipeline_tyre_data()
     results = {
-        "dataset": {
-            "rows": int(features.shape[0]),
-            "features": int(features.shape[1]),
-            "target": "standardized useful_life_km",
-        },
+        "dataset": dataset,
         "tests": [
             train_pytorch(features, target),
             train_tensorflow(features, target),
