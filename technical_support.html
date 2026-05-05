@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Technical support guide for TyreWear Intelligence: theory, pipeline, code, databases, charts, statistics, machine learning and expected results.">
+  <title>TyreWear Intelligence · Technical Support</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Shared navigation -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">TW</span>
+        <span>TyreWear Intelligence</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Landing</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#databases">Databases</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#results">Results</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Technical hero -->
+    <section class="support-hero section">
+      <div class="container">
+        <p class="eyebrow">Technical Support Guide</p>
+        <h1>Understand every layer of TyreWear Intelligence.</h1>
+        <p class="hero-text">
+          This page explains the full project from first principles: why each step exists,
+          how the code is organized, how the databases work, what the charts mean, how the
+          statistical tests are interpreted and how machine learning results should be read.
+        </p>
+      </div>
+    </section>
+
+    <section class="support-layout container">
+      <!-- Local table of contents -->
+      <aside class="support-toc" aria-label="Technical guide table of contents">
+        <strong>Guide map</strong>
+        <a href="#overview">1. Overview</a>
+        <a href="#snapshot">Snapshot</a>
+        <a href="#pipeline">2. Pipeline</a>
+        <a href="#code">3. Code</a>
+        <a href="#databases">4. Databases</a>
+        <a href="#dbt">5. dbt</a>
+        <a href="#statistics">6. Statistics</a>
+        <a href="#ml">7. Machine Learning</a>
+        <a href="#charts">8. Charts</a>
+        <a href="#advisor">9. AI Advisor</a>
+        <a href="#results">10. Results</a>
+        <a href="#runbook">11. Runbook</a>
+      </aside>
+
+      <div class="support-content">
+        <!-- Overview -->
+        <section class="doc-section" id="overview">
+          <p class="eyebrow">1. Overview</p>
+          <h2>What the project is trying to prove.</h2>
+          <p>
+            TyreWear Intelligence treats tyre selection as a data problem. Instead of ranking
+            tyres only by price, it compares technical and economic signals: tread depth,
+            durability, wear rate, safety, noise, energy efficiency and cost per kilometre.
+          </p>
+          <div class="support-callout">
+            The core question is simple: which tyre gives the best long-term value without
+            sacrificing safety or performance?
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Layer</th><th>Purpose</th><th>Output</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Data ingestion</td><td>Collect and standardize tyre data.</td><td>Raw and normalized records.</td></tr>
+              <tr><td>Storage</td><td>Persist source and analytical structures.</td><td>SQLite and DuckDB databases.</td></tr>
+              <tr><td>Transformation</td><td>Create clean analytical models.</td><td>dbt models, tests and documentation.</td></tr>
+              <tr><td>Statistics</td><td>Validate differences between tyre groups.</td><td>p-values, test decisions and assumptions.</td></tr>
+              <tr><td>ML</td><td>Predict life, wear rate and risk.</td><td>Model metrics and predictions.</td></tr>
+              <tr><td>Dashboard</td><td>Explore insights interactively.</td><td>Charts, filters and recommendations.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Snapshot -->
+        <section class="doc-section" id="snapshot">
+          <p class="eyebrow">Repository Snapshot</p>
+          <h2>Current state and validation evidence.</h2>
+          <p>
+            The repository includes a snapshot workflow to make the project auditable. The snapshot
+            records file sizes, git status, latest commit, remote configuration and deep learning
+            smoke test results.
+          </p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Snapshot file</th><th>Purpose</th><th>How to generate</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>snapshots/project_snapshot.json</code></td><td>Machine-readable project state.</td><td><code>python3 scripts/create_snapshot.py</code></td></tr>
+              <tr><td><code>snapshots/project_snapshot.md</code></td><td>Human-readable project summary.</td><td><code>python3 scripts/create_snapshot.py</code></td></tr>
+              <tr><td><code>snapshots/deep_learning_test_results.json</code></td><td>PyTorch and TensorFlow smoke test results.</td><td><code>python3 scripts/test_deep_learning.py</code></td></tr>
+            </tbody>
+          </table>
+          <div class="support-callout">
+            Before pushing the repository, run the deep learning smoke test and regenerate the
+            snapshot. This gives a reproducible checkpoint for interviews, GitHub and future work.
+          </div>
+        </section>
+
+        <!-- Pipeline -->
+        <section class="doc-section" id="pipeline">
+          <p class="eyebrow">2. Pipeline</p>
+          <h2>Why each step exists.</h2>
+          <p>
+            The pipeline separates responsibilities so that each stage can be tested and
+            explained. Public sources feed a transactional database, analytical tables are
+            built locally, statistical and ML routines generate insight, and the dashboard
+            presents the result to a user.
+          </p>
+          <div class="doc-flow">
+            <div><span>01</span><strong>Public Data Sources</strong><p>Tyre labels, manufacturer data, public datasets, price lists and observed tread depth measurements.</p></div>
+            <div><span>02</span><strong>SQLite</strong><p>Normalized storage for brands, models, dimensions, observations and prices.</p></div>
+            <div><span>03</span><strong>DuckDB</strong><p>Fast analytical layer for joins, aggregations and dashboard-ready marts.</p></div>
+            <div><span>04</span><strong>dbt</strong><p>SQL transformations, tests, documentation and lineage.</p></div>
+            <div><span>05</span><strong>Statistics &amp; ML</strong><p>Hypothesis testing, model training, prediction and validation.</p></div>
+            <div><span>06</span><strong>Streamlit App</strong><p>Interactive visual layer with filters, charts and recommendation outputs.</p></div>
+            <div><span>07</span><strong>AI Advisor</strong><p>Question-answering layer that explains results in business language.</p></div>
+          </div>
+        </section>
+
+        <!-- Code -->
+        <section class="doc-section" id="code">
+          <p class="eyebrow">3. Code Structure</p>
+          <h2>How the code should be organized.</h2>
+          <p>
+            A clean project structure makes the work easier to run in interviews, GitHub reviews
+            and local development. The goal is to separate ingestion, transformation, modelling
+            and presentation.
+          </p>
+          <div class="code-card doc-code">
+            <pre><code>tyrewear-intelligence/
+├── app.py
+├── requirements.txt
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── outputs/
+├── scripts/
+│   ├── load_sqlite.py
+│   ├── build_duckdb.py
+│   ├── statistics_tests.py
+│   └── train_models.py
+├── dbt_tyrewear/
+│   ├── models/
+│   ├── tests/
+│   └── dbt_project.yml
+└── docs/
+    └── technical_support.html</code></pre>
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr><th>File</th><th>Responsibility</th><th>Why it matters</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>load_sqlite.py</code></td><td>Loads raw tyre records into normalized tables.</td><td>Creates a stable transactional base.</td></tr>
+              <tr><td><code>build_duckdb.py</code></td><td>Creates local analytical database objects.</td><td>Supports fast exploration and dashboard queries.</td></tr>
+              <tr><td><code>statistics_tests.py</code></td><td>Runs normality, parametric and non-parametric tests.</td><td>Prevents unsupported claims.</td></tr>
+              <tr><td><code>train_models.py</code></td><td>Trains and validates ML models.</td><td>Turns historical signals into prediction.</td></tr>
+              <tr><td><code>app.py</code></td><td>Runs the Streamlit dashboard.</td><td>Makes the project interactive and demonstrable.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Databases -->
+        <section class="doc-section" id="databases">
+          <p class="eyebrow">4. Databases</p>
+          <h2>SQLite for transactions, DuckDB for analytics.</h2>
+          <p>
+            The project uses two local database engines because they solve different problems.
+            SQLite is ideal for normalized, transactional storage. DuckDB is better for analytical
+            queries, aggregations and feature tables.
+          </p>
+          <div class="cards two support-cards">
+            <article class="card">
+              <h3>SQLite schema</h3>
+              <p>Stores entities such as tyre brands, models, dimensions, observations, prices, ratings and test runs.</p>
+              <div class="code-card mini-code">
+                <pre><code>brands
+tyre_models
+dimensions
+tread_observations
+price_history
+safety_labels</code></pre>
+              </div>
+            </article>
+            <article class="card">
+              <h3>DuckDB marts</h3>
+              <p>Builds denormalized analytical tables for dashboarding, statistics and machine learning.</p>
+              <div class="code-card mini-code">
+                <pre><code>mart_tyre_comparison
+mart_cost_per_km
+mart_wear_rate
+mart_safety_efficiency
+feature_tyre_ml</code></pre>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- dbt -->
+        <section class="doc-section" id="dbt">
+          <p class="eyebrow">5. dbt</p>
+          <h2>Transformations, tests and documentation.</h2>
+          <p>
+            dbt turns SQL transformations into a documented workflow. It helps explain where each
+            field comes from, which tests validate the data and how analytical models depend on
+            each other.
+          </p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>dbt concept</th><th>Use in this project</th><th>Example test</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Staging models</td><td>Clean raw source fields.</td><td>Not null tyre model and brand.</td></tr>
+              <tr><td>Intermediate models</td><td>Calculate wear rate and cost/km.</td><td>Accepted positive values.</td></tr>
+              <tr><td>Marts</td><td>Expose tables for dashboard and ML.</td><td>Unique tyre/model/dimension key.</td></tr>
+              <tr><td>Documentation</td><td>Explain columns and lineage.</td><td>Generated dbt docs site.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Statistics -->
+        <section class="doc-section" id="statistics">
+          <p class="eyebrow">6. Statistics</p>
+          <h2>How to compare tread depth and tyre groups correctly.</h2>
+          <p>
+            Statistics is used to decide whether observed differences between tyres are likely to
+            be meaningful. For example, if Brand A has a lower average wear rate than Brand B, the
+            project should test whether that difference is statistically supported.
+          </p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Test</th><th>Question answered</th><th>When to use</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Normality test</td><td>Does the variable look normally distributed?</td><td>Before choosing parametric tests.</td></tr>
+              <tr><td>t-test</td><td>Are two group means different?</td><td>Two groups, approximately normal data.</td></tr>
+              <tr><td>ANOVA</td><td>Are three or more group means different?</td><td>Multiple groups, approximately normal data.</td></tr>
+              <tr><td>Mann-Whitney</td><td>Are two distributions different?</td><td>Two groups, non-normal data.</td></tr>
+              <tr><td>Kruskal-Wallis</td><td>Are multiple distributions different?</td><td>Multiple groups, non-normal data.</td></tr>
+              <tr><td>p-value</td><td>How surprising is the result if there is no real difference?</td><td>Decision support, not absolute proof.</td></tr>
+            </tbody>
+          </table>
+          <div class="support-callout">
+            Practical rule: if p-value is below the chosen alpha, commonly 0.05, the result is
+            treated as statistically significant. Still, significance should be interpreted with
+            effect size, sample size and business context.
+          </div>
+        </section>
+
+        <!-- Machine Learning -->
+        <section class="doc-section" id="ml">
+          <p class="eyebrow">7. Machine Learning</p>
+          <h2>Prediction is useful only when validation is honest.</h2>
+          <p>
+            ML models are trained to predict tyre life, wear rate and risk. The target can be
+            continuous, such as expected kilometres, or categorical, such as high/medium/low wear
+            risk. The model should always be evaluated on unseen data.
+          </p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Task</th><th>Target</th><th>Useful metrics</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Regression</td><td>Expected tyre life or wear rate.</td><td>MAE, RMSE, R2.</td></tr>
+              <tr><td>Classification</td><td>Risk class or recommendation class.</td><td>Accuracy, F1, ROC AUC.</td></tr>
+              <tr><td>Feature importance</td><td>Which factors influence prediction.</td><td>Permutation importance, tree importance, SHAP.</td></tr>
+              <tr><td>Deep learning</td><td>Complex patterns in larger datasets.</td><td>Validation loss, MAE, F1.</td></tr>
+            </tbody>
+          </table>
+          <div class="code-card doc-code">
+            <pre><code># Example model workflow
+X = tyre_features
+y = expected_life_km
+
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+
+mae = mean_absolute_error(y_test, predictions)</code></pre>
+          </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="doc-section" id="charts">
+          <p class="eyebrow">8. Charts</p>
+          <h2>What each graph should explain.</h2>
+          <p>
+            Charts are not decoration. Each chart should answer a question and make the result
+            easier to defend. The dashboard should combine exploratory views, comparison views and
+            model explanation views.
+          </p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Chart</th><th>Question</th><th>Interpretation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Bar chart</td><td>Which tyre has lower cost/km?</td><td>Compare categories clearly.</td></tr>
+              <tr><td>Boxplot</td><td>How variable is tread depth by brand?</td><td>Detect spread, outliers and median differences.</td></tr>
+              <tr><td>Scatter plot</td><td>Does price relate to durability?</td><td>Look for trade-offs and clusters.</td></tr>
+              <tr><td>Histogram</td><td>How is wear rate distributed?</td><td>Check skew and normality assumptions.</td></tr>
+              <tr><td>Feature importance</td><td>What drives the model?</td><td>Explain prediction logic.</td></tr>
+              <tr><td>Recommendation table</td><td>Which tyre should be selected?</td><td>Combine score, cost and safety constraints.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- AI Advisor -->
+        <section class="doc-section" id="advisor">
+          <p class="eyebrow">9. AI Advisor</p>
+          <h2>Turning analysis into answers.</h2>
+          <p>
+            The AI advisor is a layer that answers questions about tyres using the project outputs.
+            It should not invent data. It should answer from available tables, model results,
+            statistical tests and documented business rules.
+          </p>
+          <div class="support-callout">
+            Example question: “Which tyre gives the best value for 225/45 R17 if I prioritize
+            wet safety and low cost per kilometre?”
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Advisor input</th><th>Advisor should use</th><th>Answer style</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>User constraints</td><td>Dimension, season, budget and priority.</td><td>Clear recommendation.</td></tr>
+              <tr><td>Database results</td><td>Top filtered tyres and metrics.</td><td>Evidence-based explanation.</td></tr>
+              <tr><td>ML output</td><td>Predicted life and wear risk.</td><td>Probabilistic language.</td></tr>
+              <tr><td>Statistics</td><td>Significance and uncertainty.</td><td>Honest caveats.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Results -->
+        <section class="doc-section" id="results">
+          <p class="eyebrow">10. Results</p>
+          <h2>How to interpret the output.</h2>
+          <p>
+            The final result should not be a single “best tyre” without context. A strong output
+            explains the trade-off between safety, durability, cost and uncertainty.
+          </p>
+          <div class="result-grid">
+            <div>
+              <strong>Best value</strong>
+              <span>Lowest cost per kilometre after durability adjustment.</span>
+            </div>
+            <div>
+              <strong>Safest option</strong>
+              <span>Best wet grip and lower wear risk under constraints.</span>
+            </div>
+            <div>
+              <strong>Longest life</strong>
+              <span>Highest predicted useful kilometres before replacement threshold.</span>
+            </div>
+            <div>
+              <strong>Recommended tyre</strong>
+              <span>Balanced score across cost, safety, durability and noise.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Runbook -->
+        <section class="doc-section" id="runbook">
+          <p class="eyebrow">11. Runbook</p>
+          <h2>How to run and validate the project.</h2>
+          <div class="code-card doc-code">
+            <pre><code># 1. Create environment
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# 2. Load transactional database
+python scripts/load_sqlite.py
+
+# 3. Build analytics layer
+python scripts/build_duckdb.py
+dbt build
+
+# 4. Run statistics and ML
+python scripts/statistics_tests.py
+python scripts/train_models.py
+
+# 5. Start dashboard
+streamlit run app.py</code></pre>
+          </div>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Validation</th><th>Expected result</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Database exists</td><td>SQLite and DuckDB files are created.</td></tr>
+              <tr><td>dbt build</td><td>All models and tests pass.</td></tr>
+              <tr><td>Statistics output</td><td>CSV or JSON with tests, p-values and decisions.</td></tr>
+              <tr><td>ML output</td><td>Metrics file with train/test performance.</td></tr>
+              <tr><td>Dashboard</td><td>Streamlit opens with filters, charts and recommendations.</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

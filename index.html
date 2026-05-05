@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TyreWear Intelligence is a data, statistics and machine learning platform for tyre comparison, tyre wear analysis and decision support.">
+  <title>TyreWear Intelligence</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="TyreWear Intelligence home">
+        <span class="brand-mark">TW</span>
+        <span>TyreWear Intelligence</span>
+      </a>
+      <div class="nav-links">
+        <a href="#solution">Solution</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#ml">ML</a>
+        <a href="#run">Run</a>
+        <a href="technical_support.html">Technical support</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Hero section -->
+    <section class="hero section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Tyre analytics · Statistics · Machine Learning</p>
+          <h1>Make tyre decisions with evidence, not assumptions.</h1>
+          <p class="hero-text">
+            TyreWear Intelligence is a professional analytics platform for comparing tyres by
+            durability, safety, cost per kilometre, energy efficiency, noise and wear risk.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#run">Run locally</a>
+            <a class="button secondary" href="#architecture">View architecture</a>
+            <a class="button secondary" href="technical_support.html">Read technical guide</a>
+          </div>
+          <div class="hero-metrics" aria-label="Project highlights">
+            <div>
+              <strong>7-layer</strong>
+              <span>data workflow</span>
+            </div>
+            <div>
+              <strong>6 tests</strong>
+              <span>statistical validation</span>
+            </div>
+            <div>
+              <strong>ML-ready</strong>
+              <span>forecasting and risk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual product preview built with semantic HTML/CSS only -->
+        <aside class="product-preview" aria-label="Tyre analytics dashboard preview">
+          <div class="preview-topbar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="preview-heading">
+            <div>
+              <p>Fleet tyre comparison</p>
+              <strong>Wear risk index</strong>
+            </div>
+            <span class="score">82%</span>
+          </div>
+          <div class="chart-card">
+            <div class="bar-line" style="--width: 92%"><span>Durability</span></div>
+            <div class="bar-line" style="--width: 74%"><span>Wet grip</span></div>
+            <div class="bar-line" style="--width: 66%"><span>Cost/km</span></div>
+            <div class="bar-line" style="--width: 58%"><span>Noise</span></div>
+          </div>
+          <div class="preview-grid">
+            <div>
+              <small>Predicted life</small>
+              <strong>48,200 km</strong>
+            </div>
+            <div>
+              <small>Wear rate</small>
+              <strong>0.18 mm / 1k km</strong>
+            </div>
+            <div>
+              <small>Best value</small>
+              <strong>€0.071 / km</strong>
+            </div>
+            <div>
+              <small>Risk class</small>
+              <strong>Medium-low</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- The Problem -->
+    <section class="section" id="problem">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">The Problem</p>
+          <h2>Buying tyres by price alone hides the real cost.</h2>
+        </div>
+        <div class="prose">
+          <p>
+            A cheaper tyre can become more expensive when it wears faster, increases energy
+            consumption, performs worse in wet conditions, or creates higher replacement risk.
+            Price is only one variable in a decision that also depends on mileage, tread depth,
+            safety class, driving context and long-term operating cost.
+          </p>
+          <p>
+            TyreWear Intelligence reframes tyre choice as an analytical decision: compare
+            performance, quantify uncertainty and surface the trade-offs that matter before
+            purchase or fleet replacement.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Solution -->
+    <section class="section tinted" id="solution">
+      <div class="container">
+        <div class="section-intro">
+          <p class="eyebrow">The Solution</p>
+          <h2>A local-first platform for tyre intelligence.</h2>
+          <p>
+            The project combines structured storage, analytical modelling, statistical testing,
+            machine learning and an interactive advisor into one reproducible workflow.
+          </p>
+        </div>
+        <div class="cards three">
+          <article class="card">
+            <span class="card-number">01</span>
+            <h3>Compare tyres fairly</h3>
+            <p>Filter by brand, model, dimension, season, cost, wear, wet grip, noise and energy efficiency.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">02</span>
+            <h3>Validate assumptions</h3>
+            <p>Use statistical tests to determine whether observed differences are meaningful or just noise.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">03</span>
+            <h3>Predict outcomes</h3>
+            <p>Estimate tyre life, wear rate and replacement risk with machine learning models.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section" id="architecture">
+      <div class="container">
+        <div class="section-intro narrow">
+          <p class="eyebrow">Architecture</p>
+          <h2>From public data to decision support.</h2>
+          <p>
+            The architecture is intentionally local and transparent: each layer has a clear
+            responsibility, making the project easier to test, document and explain.
+          </p>
+        </div>
+        <div class="pipeline" aria-label="Architecture pipeline">
+          <div>Public Data Sources</div>
+          <div>SQLite</div>
+          <div>DuckDB</div>
+          <div>dbt</div>
+          <div>Statistics &amp; ML</div>
+          <div>Streamlit App</div>
+          <div>AI Advisor</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- dbt + DuckDB -->
+    <section class="section compact" id="dbt">
+      <div class="container two-columns">
+        <div>
+          <p class="eyebrow">dbt + DuckDB</p>
+          <h2>Analytics engineering without cloud overhead.</h2>
+        </div>
+        <div class="feature-list">
+          <div>
+            <h3>DuckDB for local analytics</h3>
+            <p>Fast columnar queries over tyre datasets, analytical marts and model-ready tables.</p>
+          </div>
+          <div>
+            <h3>dbt for transformation quality</h3>
+            <p>Document transformations, test assumptions and create reproducible analytical models.</p>
+          </div>
+          <div>
+            <h3>SQLite for transactional structure</h3>
+            <p>Store normalized source entities before analytical transformation into DuckDB.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="section tinted" id="statistics">
+      <div class="container two-columns">
+        <div>
+          <p class="eyebrow">Applied Statistics</p>
+          <h2>Tread depth analysis with statistical confidence.</h2>
+          <p class="lead">
+            TD, or tread depth, is central to tyre health. The project uses statistical testing
+            to compare groups and validate whether tyre performance differences are meaningful.
+          </p>
+        </div>
+        <div class="stat-grid">
+          <div>p-value</div>
+          <div>Normality</div>
+          <div>t-test</div>
+          <div>ANOVA</div>
+          <div>Mann-Whitney</div>
+          <div>Kruskal-Wallis</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Machine Learning -->
+    <section class="section" id="ml">
+      <div class="container">
+        <div class="section-intro">
+          <p class="eyebrow">Machine Learning</p>
+          <h2>Predict useful life, wear rate and risk.</h2>
+          <p>
+            The ML layer turns tyre characteristics and usage signals into predictive insights.
+            Models can estimate remaining life, expected wear rate and high-risk degradation patterns.
+          </p>
+        </div>
+        <div class="cards four">
+          <article class="card compact-card">
+            <h3>Life prediction</h3>
+            <p>Estimate expected tyre life in kilometres.</p>
+          </article>
+          <article class="card compact-card">
+            <h3>Wear rate</h3>
+            <p>Model tread loss per distance interval.</p>
+          </article>
+          <article class="card compact-card">
+            <h3>Risk scoring</h3>
+            <p>Classify tyres with higher wear or safety risk.</p>
+          </article>
+          <article class="card compact-card">
+            <h3>Deep learning ready</h3>
+            <p>Prepared for TensorFlow and PyTorch experimentation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="section compact" id="dashboard">
+      <div class="container split reverse">
+        <div class="dashboard-panel">
+          <div class="mini-table">
+            <div><strong>Brand</strong><strong>Cost/km</strong><strong>Risk</strong></div>
+            <div><span>Michelin</span><span>€0.074</span><span>Low</span></div>
+            <div><span>Continental</span><span>€0.079</span><span>Low</span></div>
+            <div><span>Goodyear</span><span>€0.083</span><span>Medium</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">Streamlit Dashboard</p>
+          <h2>Explore, filter and recommend tyres interactively.</h2>
+          <p class="prose">
+            The Streamlit app provides visual exploration, dynamic filters, tyre comparison,
+            model outputs and recommendation logic. It is designed for quick analysis during
+            development and clear storytelling during portfolio presentations.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Value -->
+    <section class="section tinted" id="value">
+      <div class="container">
+        <div class="section-intro narrow">
+          <p class="eyebrow">Business Value</p>
+          <h2>Better tyre decisions for buyers, fleets and analysts.</h2>
+        </div>
+        <div class="cards three">
+          <article class="card">
+            <h3>Lower total cost</h3>
+            <p>Compare tyres by cost per kilometre instead of purchase price only.</p>
+          </article>
+          <article class="card">
+            <h3>Improved safety</h3>
+            <p>Identify tyres with higher wear risk or weaker performance under specific conditions.</p>
+          </article>
+          <article class="card">
+            <h3>Explainable decisions</h3>
+            <p>Support recommendations with statistics, tests, model metrics and documented data lineage.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How to run -->
+    <section class="section" id="run">
+      <div class="container two-columns">
+        <div>
+          <p class="eyebrow">How to run</p>
+          <h2>Local execution workflow.</h2>
+          <p class="lead">
+            The project is designed to run locally with a clear path from ingestion to dashboard.
+          </p>
+        </div>
+        <div class="code-card">
+          <pre><code>python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+python scripts/load_sqlite.py
+dbt build
+python scripts/train_models.py
+streamlit run app.py</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio close -->
+    <section class="section finale">
+      <div class="container finale-box">
+        <p class="eyebrow">Portfolio Project</p>
+        <h2>TyreWear Intelligence shows the full analytics lifecycle.</h2>
+        <p>
+          It demonstrates data modelling, local analytics engineering, statistical validation,
+          machine learning, dashboarding and AI-assisted decision support in one coherent project.
+        </p>
+        <a class="button primary" href="#top">Back to top</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "project": "TyreWear Intelligence",
+  "created_at": "2026-05-05T21:40:58",
+  "repository": {
+    "git_status": "fatal: not a git repository (or any of the parent directories): .git",
+    "latest_commit": "fatal: not a git repository (or any of the parent directories): .git",
+    "remote": "fatal: not a git repository (or any of the parent directories): .git"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "size_bytes": 12958
+    },
+    {
+      "path": "style.css",
+      "size_bytes": 16355
+    },
+    {
+      "path": "technical_support.html",
+      "size_bytes": 20388
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 1361
+    },
+    {
+      "path": "requirements.txt",
+      "size_bytes": 70
+    },
+    {
+      "path": "scripts/test_deep_learning.py",
+      "size_bytes": 3647
+    },
+    {
+      "path": "scripts/create_snapshot.py",
+      "size_bytes": 2649
+    }
+  ],
+  "deep_learning": {
+    "dataset": {
+      "rows": 420,
+      "features": 7,
+      "target": "standardized useful_life_km"
+    },
+    "tests": [
+      {
+        "framework": "pytorch",
+        "version": "2.2.2",
+        "final_mse": 0.022102,
+        "status": "passed"
+      },
+      {
+        "framework": "tensorflow",
+        "version": "2.16.1",
+        "final_mse": 0.024933,
+        "status": "passed"
+      }
+    ]
+  }
+}
