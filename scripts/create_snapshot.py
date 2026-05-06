@@ -34,6 +34,7 @@ def main() -> None:
         "app.py",
         "src/tyrewear_app.py",
         "scripts/generate_tyre_data.py",
+        "scripts/fetch_real_tyre_reference.py",
         "scripts/analyze_tyre_data.py",
         "scripts/setup_sqlite.py",
         "scripts/setup_duckdb.py",
@@ -41,6 +42,8 @@ def main() -> None:
         "scripts/test_deep_learning.py",
         "scripts/create_snapshot.py",
         "data/raw/sample_tyre_dataset.csv",
+        "data/reference/nhtsa_utqg_distribution.csv",
+        "data/reference/real_tyre_data_sources.csv",
         "data/processed/tyrewear.sqlite",
         "data/processed/tyrewear.duckdb",
         "data/processed/tyrewear_europe_clean.csv",
@@ -50,6 +53,8 @@ def main() -> None:
         "data/outputs/analysis_summary.json",
         "data/outputs/tyre_clusters.csv",
         "data/outputs/cluster_summary.csv",
+        "data/outputs/dimension_performance.csv",
+        "data/outputs/dimension_monthly_patterns.csv",
     ]
     deep_learning_path = SNAPSHOT_DIR / "deep_learning_test_results.json"
     deep_learning_results = {}

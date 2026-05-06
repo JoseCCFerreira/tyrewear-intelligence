@@ -11,5 +11,6 @@ select
   wear_rate_mm_10000km,
   predicted_life_km,
   remaining_life_km,
+  cost_per_1000km,
   risk_class
 from {{ ref('sample_tyre_dataset') }}

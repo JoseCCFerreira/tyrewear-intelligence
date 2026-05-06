@@ -10,3 +10,5 @@ Kruskal-Wallis,Wear-rate distributions across regions,561.54786,0.0,different
 Chi-square,Region vs risk class association,42.71312,2.43e-06,associated
 Pearson,Mileage vs current tread depth,-0.79626,0.0,correlated
 Spearman,Mileage vs current tread depth rank,-0.77571,0.0,correlated
+ANOVA,Wear-rate means across rim sizes,0.56616,0.68723929,not different
+Spearman,Tyre width vs wear-rate rank,-0.0247,0.21695955,not correlated

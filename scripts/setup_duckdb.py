@@ -66,6 +66,25 @@ def main() -> None:
         SELECT * FROM tyre_measurements
         """
     )
+    drop_relation(conn, "mart_tyre_size_analysis")
+    conn.execute(
+        """
+        CREATE VIEW mart_tyre_size_analysis AS
+        SELECT
+            tyre_size,
+            width_mm,
+            aspect_ratio,
+            rim_inch,
+            COUNT(*) AS tyres,
+            AVG(td_current_mm) AS td_avg_mm,
+            AVG(wear_rate_mm_10000km) AS wear_rate_avg,
+            AVG(remaining_life_km) AS remaining_life_avg_km,
+            AVG(cost_per_1000km) AS cost_per_1000km_avg,
+            AVG(CASE WHEN risk_class IN ('high', 'critical') THEN 1 ELSE 0 END) * 100 AS risk_share_pct
+        FROM tyre_measurements
+        GROUP BY ALL
+        """
+    )
     conn.close()
     print(f"DuckDB analytical database created: {DB_PATH}")
 

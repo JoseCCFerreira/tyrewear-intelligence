@@ -17,7 +17,7 @@
   </header>
   <main>
     <section><h2>Problem</h2><p>Choosing tyres only by price ignores durability, wet safety, rolling resistance, noise and cost per kilometre.</p></section>
-    <section><h2>Solution</h2><p>The platform combines a realistic dataset, SQLite, DuckDB, dbt, statistical testing, clustering, machine learning, Streamlit and an AI advisor MVP.</p></section>
+    <section><h2>Solution</h2><p>The platform combines official real reference data, a realistic tread-depth measurement panel, SQLite, DuckDB, dbt, statistical testing, clustering, machine learning, Streamlit and an AI advisor MVP.</p></section>
     <section><h2>Architecture</h2><div class="flow"><span>Public Data Sources</span><span>SQLite</span><span>DuckDB</span><span>dbt</span><span>Statistics</span><span>Clustering</span><span>ML</span><span>Streamlit</span><span>AI Advisor</span></div></section>
     <section><h2>Role-Based Project Breakdown</h2><div class="cards">
       <article><h3>Data Analyst</h3><p>KPIs, dashboards, maps, comparisons, filters and business storytelling.</p><b>Tools:</b> SQL, pandas, Plotly, Streamlit.</article>
@@ -29,10 +29,12 @@
     <section><h2>Tread Depth Methodology</h2><p><b>Wear:</b> TD initial - TD current. <b>Wear rate:</b> wear / mileage × 10,000. <b>Remaining life:</b> max(TD current - 1.6, 0) / wear rate × 10,000.</p></section>
     <section><h2>Statistical Methods</h2><p>Normality, p-value interpretation, parametric tests, non-parametric tests, correlations and regression are used to separate real signals from noise.</p></section>
     <section><h2>Clustering</h2><p>K-Means, DBSCAN, GMM and PCA reveal natural tyre groups by TD, wear, cost and remaining life. UMAP/t-SNE are roadmap items.</p></section>
-    <section><h2>Machine Learning</h2><p>Models predict remaining life, wear rate and risk class. Classical tabular models are the baseline before deep learning.</p></section>
+    <section><h2>Tyre Size Intelligence</h2><p>Tyre dimension is explicit: tyre_size, width, aspect ratio and rim diameter are used in filters, ranking, heatmaps, scatter plots, clustering and ML features.</p></section>
+    <section><h2>Real Data Reference</h2><p>The app includes official NHTSA TireWise / UTQGS aggregate distributions for treadwear, traction and temperature ratings, with Data.gov and EPREL source metadata.</p></section>
+    <section><h2>Machine Learning</h2><p>Models predict remaining life, wear rate and risk class. Classical tabular models are the baseline before deep learning, with tyre dimension included as categorical and numeric features.</p></section>
     <section><h2>TensorFlow and PyTorch</h2><p>They add real value for images, tabular neural-network comparison, time series and recommendation embeddings, not for every simple dashboard task.</p></section>
     <section><h2>Geographic Intelligence</h2><p>The app maps TD, wear rate and risk share by European country, region and city with interactive filters.</p></section>
-    <section><h2>Streamlit Application</h2><p>Pages: Overview, Data Explorer, Tread Depth, Statistical Tests, Correlation, Clustering, ML, Deep Learning, Geo Map, Recommendation, AI Advisor, Role-Based Skills and Methodology.</p></section>
+    <section><h2>Streamlit Application</h2><p>Pages: Overview, Data Explorer, Tread Depth, Tyre Size Intelligence, Statistical Tests, Correlation, Clustering, ML, Deep Learning, Geo Map, Recommendation, AI Advisor, Role-Based Skills, Methodology and Real Data Reference.</p></section>
     <section><h2>dbt and Analytics Engineering</h2><p>The dbt project includes staging, intermediate, marts, schema tests and a valid-range SQL test.</p></section>
     <section><h2>Learning Outcomes</h2><p>The project demonstrates analyst, analytics engineering, data science, data engineering and ML engineering skills in one coherent system.</p></section>
     <section><h2>How to Run</h2><pre><code>pip install -r requirements.txt

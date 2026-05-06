@@ -22,5 +22,7 @@ models:
     description: Tread depth and wear-rate mart by tyre and geography.
   - name: mart_tyre_performance
     description: Brand and tyre size performance mart.
+  - name: mart_tyre_size_analysis
+    description: Dimension-level analytical mart by tyre size, width, aspect ratio and rim diameter.
   - name: mart_ml_features
     description: Feature table for ML experiments.

@@ -19,6 +19,7 @@ Buying tyres only by price is incomplete. A cheaper tyre can wear faster, increa
 The platform provides a realistic end-to-end MVP:
 
 - realistic tyre dataset
+- official real reference layer from NHTSA TireWise / UTQGS
 - SQLite transactional layer
 - DuckDB analytical layer
 - dbt staging/intermediate/marts
@@ -104,10 +105,19 @@ Streamlit App → AI Advisor
 - AI Advisor
 - Role-Based Skills Map
 - Methodology
+- Tyre Size Intelligence
+- Real Data Reference
 
 ## Data Sources
 
-The MVP uses a realistic simulated dataset. Future sources can include:
+The project separates two data layers:
+
+- **Real official reference data:** NHTSA TireWise / UTQGS published rating distributions for treadwear, traction and temperature, plus source metadata for NHTSA/Data.gov and EPREL.
+- **Analytical measurement dataset:** realistic simulated repeated tyre observations for tread depth, mileage, region, cost, risk and wear-rate modelling.
+
+This distinction is intentional: public official sources expose tyre rating/label reference data, while repeated tread-depth measurements by tyre, mileage, region and usage profile are usually proprietary fleet, workshop or user-owned data.
+
+Future real-data sources can include:
 
 - NHTSA / UTQG
 - EPREL
@@ -125,7 +135,11 @@ The generated file is:
 
 ```text
 data/raw/sample_tyre_dataset.csv
+data/reference/nhtsa_utqg_distribution.csv
+data/reference/real_tyre_data_sources.csv
 ```
+
+Tyre dimension is modelled explicitly through `tyre_size`, `width_mm`, `aspect_ratio` and `rim_inch`. These fields are used in descriptive charts, correlation, clustering and ML feature sets.
 
 ## dbt Workflow
 
@@ -201,6 +215,8 @@ Implemented MVP:
 - Gradient Boosting regression
 - Logistic Regression classification
 - Random Forest classification
+
+The feature set includes tyre dimension both as a categorical size (`tyre_size`) and numeric engineering variables (`width_mm`, `aspect_ratio`, `rim_inch`).
 
 ## TensorFlow / PyTorch Usage
 

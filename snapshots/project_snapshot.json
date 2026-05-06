@@ -1,9 +1,9 @@
 {
   "project": "TyreWear Intelligence",
-  "created_at": "2026-05-06T10:51:42",
+  "created_at": "2026-05-06T21:02:05",
   "repository": {
-    "git_status": "M data/processed/tyrewear.duckdb\n M data/processed/tyrewear.sqlite\n M snapshots/project_snapshot.json\n M snapshots/project_snapshot.md",
-    "latest_commit": "f291126 feat: build professional tyrewear intelligence platform",
+    "git_status": "M README.md\n M data/outputs/analysis_summary.json\n M data/outputs/cluster_summary.csv\n M data/outputs/correlation_matrix.csv\n M data/outputs/hypothesis_tests.csv\n M data/outputs/ml_classification_metrics.csv\n M data/outputs/ml_regression_metrics.csv\n M data/outputs/tyre_clusters.csv\n M data/processed/tyrewear.duckdb\n M data/processed/tyrewear.sqlite\n M dbt_tyre_warehouse/models/intermediate/int_ml_features.sql\n M dbt_tyre_warehouse/models/schema.yml\n M dbt_tyre_warehouse/models/staging/stg_td_measurements.sql\n M docs/03_data_sources.md\n M docs/09_machine_learning_methods.md\n M docs/12_streamlit_app_guide.md\n M docs_html/index.html\n M scripts/analyze_tyre_data.py\n M scripts/create_snapshot.py\n M scripts/run_full_pipeline.py\n M scripts/setup_duckdb.py\n M snapshots/project_snapshot.json\n M snapshots/project_snapshot.md\n M src/tyrewear_app.py\n?? data/outputs/dimension_monthly_patterns.csv\n?? data/outputs/dimension_performance.csv\n?? data/reference/\n?? dbt_tyre_warehouse/models/marts/mart_tyre_size_analysis.sql\n?? pages/13_Tyre_Size_Intelligence.py\n?? pages/14_Real_Data_Reference.py\n?? scripts/fetch_real_tyre_reference.py",
+    "latest_commit": "8b83846 fix: avoid statsmodels trendline in tread depth chart",
     "remote": "origin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)\norigin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)"
   },
   "files": [
@@ -21,7 +21,7 @@
     },
     {
       "path": "README.md",
-      "size_bytes": 7344
+      "size_bytes": 8473
     },
     {
       "path": "requirements.txt",
@@ -33,15 +33,19 @@
     },
     {
       "path": "src/tyrewear_app.py",
-      "size_bytes": 10938
+      "size_bytes": 17537
     },
     {
       "path": "scripts/generate_tyre_data.py",
       "size_bytes": 9415
     },
     {
+      "path": "scripts/fetch_real_tyre_reference.py",
+      "size_bytes": 3581
+    },
+    {
       "path": "scripts/analyze_tyre_data.py",
-      "size_bytes": 15937
+      "size_bytes": 18652
     },
     {
       "path": "scripts/setup_sqlite.py",
@@ -49,11 +53,11 @@
     },
     {
       "path": "scripts/setup_duckdb.py",
-      "size_bytes": 2353
+      "size_bytes": 3013
     },
     {
       "path": "scripts/run_full_pipeline.py",
-      "size_bytes": 597
+      "size_bytes": 637
     },
     {
       "path": "scripts/test_deep_learning.py",
@@ -61,11 +65,19 @@
     },
     {
       "path": "scripts/create_snapshot.py",
-      "size_bytes": 3371
+      "size_bytes": 3631
     },
     {
       "path": "data/raw/sample_tyre_dataset.csv",
       "size_bytes": 695529
+    },
+    {
+      "path": "data/reference/nhtsa_utqg_distribution.csv",
+      "size_bytes": 2136
+    },
+    {
+      "path": "data/reference/real_tyre_data_sources.csv",
+      "size_bytes": 1054
     },
     {
       "path": "data/processed/tyrewear.sqlite",
@@ -73,7 +85,7 @@
     },
     {
       "path": "data/processed/tyrewear.duckdb",
-      "size_bytes": 4730880
+      "size_bytes": 5779456
     },
     {
       "path": "data/processed/tyrewear_europe_clean.csv",
@@ -89,19 +101,27 @@
     },
     {
       "path": "data/outputs/hypothesis_tests.csv",
-      "size_bytes": 798
+      "size_bytes": 942
     },
     {
       "path": "data/outputs/analysis_summary.json",
-      "size_bytes": 3650
+      "size_bytes": 4496
     },
     {
       "path": "data/outputs/tyre_clusters.csv",
-      "size_bytes": 450790
+      "size_bytes": 476619
     },
     {
       "path": "data/outputs/cluster_summary.csv",
-      "size_bytes": 283
+      "size_bytes": 278
+    },
+    {
+      "path": "data/outputs/dimension_performance.csv",
+      "size_bytes": 670
+    },
+    {
+      "path": "data/outputs/dimension_monthly_patterns.csv",
+      "size_bytes": 18763
     }
   ],
   "deep_learning": {

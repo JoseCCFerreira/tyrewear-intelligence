@@ -5,6 +5,7 @@ select
   m.td_current_mm,
   m.wear_rate_mm_10000km,
   m.remaining_life_km,
+  m.cost_per_1000km,
   m.risk_class,
   v.vehicle_type,
   v.vehicle_weight_kg,

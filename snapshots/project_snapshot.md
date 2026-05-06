@@ -1,10 +1,10 @@
 # TyreWear Intelligence Snapshot
 
-Generated at: `2026-05-06T10:51:42`
+Generated at: `2026-05-06T21:02:05`
 
 ## Repository
 
-- Latest commit: `f291126 feat: build professional tyrewear intelligence platform`
+- Latest commit: `8b83846 fix: avoid statsmodels trendline in tread depth chart`
 - Remote: `origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)
 origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 
@@ -15,27 +15,32 @@ origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 | `index.html` | 12958 bytes |
 | `style.css` | 16355 bytes |
 | `technical_support.html` | 20737 bytes |
-| `README.md` | 7344 bytes |
+| `README.md` | 8473 bytes |
 | `requirements.txt` | 123 bytes |
 | `app.py` | 197 bytes |
-| `src/tyrewear_app.py` | 10938 bytes |
+| `src/tyrewear_app.py` | 17537 bytes |
 | `scripts/generate_tyre_data.py` | 9415 bytes |
-| `scripts/analyze_tyre_data.py` | 15937 bytes |
+| `scripts/fetch_real_tyre_reference.py` | 3581 bytes |
+| `scripts/analyze_tyre_data.py` | 18652 bytes |
 | `scripts/setup_sqlite.py` | 917 bytes |
-| `scripts/setup_duckdb.py` | 2353 bytes |
-| `scripts/run_full_pipeline.py` | 597 bytes |
+| `scripts/setup_duckdb.py` | 3013 bytes |
+| `scripts/run_full_pipeline.py` | 637 bytes |
 | `scripts/test_deep_learning.py` | 5077 bytes |
-| `scripts/create_snapshot.py` | 3371 bytes |
+| `scripts/create_snapshot.py` | 3631 bytes |
 | `data/raw/sample_tyre_dataset.csv` | 695529 bytes |
+| `data/reference/nhtsa_utqg_distribution.csv` | 2136 bytes |
+| `data/reference/real_tyre_data_sources.csv` | 1054 bytes |
 | `data/processed/tyrewear.sqlite` | 937984 bytes |
-| `data/processed/tyrewear.duckdb` | 4730880 bytes |
+| `data/processed/tyrewear.duckdb` | 5779456 bytes |
 | `data/processed/tyrewear_europe_clean.csv` | 825363 bytes |
 | `data/processed/tyrewear_europe_monthly_resampled.csv` | 56497 bytes |
 | `data/processed/tyrewear_europe_annual_country.csv` | 4885 bytes |
-| `data/outputs/hypothesis_tests.csv` | 798 bytes |
-| `data/outputs/analysis_summary.json` | 3650 bytes |
-| `data/outputs/tyre_clusters.csv` | 450790 bytes |
-| `data/outputs/cluster_summary.csv` | 283 bytes |
+| `data/outputs/hypothesis_tests.csv` | 942 bytes |
+| `data/outputs/analysis_summary.json` | 4496 bytes |
+| `data/outputs/tyre_clusters.csv` | 476619 bytes |
+| `data/outputs/cluster_summary.csv` | 278 bytes |
+| `data/outputs/dimension_performance.csv` | 670 bytes |
+| `data/outputs/dimension_monthly_patterns.csv` | 18763 bytes |
 
 
 ## Deep Learning Smoke Tests

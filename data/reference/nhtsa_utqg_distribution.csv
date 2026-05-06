@@ -1,0 +1,14 @@
+rating_system,class_code,class_label,share_pct,interpretation,source,source_url
+treadwear,below_200,<200,15.0,Lower relative treadwear grade,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+treadwear,201_300,201-300,25.0,NHTSA published treadwear distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+treadwear,301_400,301-400,32.0,NHTSA published treadwear distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+treadwear,401_500,401-500,20.0,NHTSA published treadwear distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+treadwear,501_600,501-600,6.0,NHTSA published treadwear distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+treadwear,above_600,>600,2.0,Higher relative treadwear grade,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+traction,AA,AA,15.0,Highest wet traction grade,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+traction,A,A,77.0,NHTSA published traction distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+traction,B,B,7.0,NHTSA published traction distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+traction,C,C,0.2,NHTSA reports only four current tire lines rated C,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+temperature,A,A,62.0,Highest temperature resistance grade,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+temperature,B,B,34.0,NHTSA published temperature distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires
+temperature,C,C,4.0,NHTSA published temperature distribution,NHTSA TireWise / Uniform Tire Quality Grading System,https://www.nhtsa.gov/vehicle-safety/tires

@@ -10,6 +10,15 @@ Implemented:
 - Logistic Regression classification
 - Random Forest classification
 
+Tyre dimension is included in the model feature set:
+
+- tyre_size as categorical data
+- width_mm
+- aspect_ratio
+- rim_inch
+
+This lets the model learn that wear and risk can differ by footprint, sidewall profile and wheel diameter.
+
 Targets:
 
 - remaining_life_km

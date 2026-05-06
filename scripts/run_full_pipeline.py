@@ -14,6 +14,7 @@ def run(script: str) -> None:
 
 
 def main() -> None:
+    run("fetch_real_tyre_reference.py")
     run("generate_tyre_data.py")
     run("setup_sqlite.py")
     run("setup_duckdb.py")

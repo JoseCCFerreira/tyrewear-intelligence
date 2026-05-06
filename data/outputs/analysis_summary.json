@@ -91,24 +91,38 @@
       "statistic": -0.77571,
       "p_value": 0.0,
       "decision": "correlated"
+    },
+    {
+      "test": "ANOVA",
+      "question": "Wear-rate means across rim sizes",
+      "statistic": 0.56616,
+      "p_value": 0.68723929,
+      "decision": "not different"
+    },
+    {
+      "test": "Spearman",
+      "question": "Tyre width vs wear-rate rank",
+      "statistic": -0.0247,
+      "p_value": 0.21695955,
+      "decision": "not correlated"
     }
   ],
   "machine_learning": {
     "regression": [
       {
         "model": "Ridge",
-        "mae": 5517.74,
-        "r2": 0.9223
+        "mae": 5555.06,
+        "r2": 0.921
       },
       {
         "model": "Random Forest Regressor",
-        "mae": 733.87,
+        "mae": 734.67,
         "r2": 0.9968
       },
       {
         "model": "Gradient Boosting Regressor",
-        "mae": 1129.42,
-        "r2": 0.9965
+        "mae": 1101.64,
+        "r2": 0.9966
       }
     ],
     "classification": [
@@ -116,19 +130,19 @@
         "model": "Logistic Regression",
         "accuracy": 0.996,
         "f1": 0.9231,
-        "roc_auc": 0.9772
+        "roc_auc": 0.9769
       },
       {
         "model": "Random Forest Classifier",
-        "accuracy": 0.992,
-        "f1": 0.8333,
-        "roc_auc": 0.9999
+        "accuracy": 0.998,
+        "f1": 0.963,
+        "roc_auc": 0.9994
       }
     ],
     "clustering": {
-      "kmeans_silhouette": 0.1736,
-      "kmeans_davies_bouldin": 1.5703,
-      "dbscan_clusters": 1
+      "kmeans_silhouette": 0.1682,
+      "kmeans_davies_bouldin": 1.7562,
+      "dbscan_clusters": 0
     }
   },
   "patterns": {
@@ -140,6 +154,23 @@
       "remaining_life_avg_km": 41363.6001,
       "cost_per_1000km_avg": 3.9088,
       "risk_share_pct": 8.1081
+    },
+    "highest_risk_dimension": {
+      "tyre_size": "225/45 R17",
+      "width_mm": 225,
+      "aspect_ratio": 45,
+      "rim_inch": 17,
+      "observations": 463,
+      "brands": 8,
+      "td_avg_mm": 5.7817,
+      "td_min_mm": 1.1,
+      "wear_rate_avg": 0.8043,
+      "remaining_life_avg_km": 58367.2287,
+      "cost_per_1000km_avg": 3.2667,
+      "risk_share_pct": 3.6717,
+      "price_avg_eur": 264.9051,
+      "noise_avg_db": 73.3184,
+      "rolling_resistance_avg": 5.9083
     },
     "best_recommended_tyre": {
       "tyre_id": "TYR00216",

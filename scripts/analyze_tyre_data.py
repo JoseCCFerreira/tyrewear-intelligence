@@ -40,7 +40,7 @@ def clean_data(raw: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
         "vehicle_weight_kg", "latitude", "longitude", "mileage_km", "td_initial_mm", "td_current_mm",
         "td_inner_mm", "td_center_mm", "td_outer_mm", "wear_mm", "wear_rate_mm_10000km",
         "predicted_life_km", "remaining_life_km", "noise_db", "rolling_resistance", "price_eur",
-        "cost_per_1000km",
+        "cost_per_1000km", "width_mm", "aspect_ratio", "rim_inch",
     ]
     for col in numeric:
         df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -133,6 +133,11 @@ def hypothesis_tests(df: pd.DataFrame) -> pd.DataFrame:
     rows.append(["Pearson", "Mileage vs current tread depth", pearson.statistic, pearson.pvalue, "correlated" if pearson.pvalue < 0.05 else "not correlated"])
     spearman = stats.spearmanr(df["mileage_km"], df["td_current_mm"])
     rows.append(["Spearman", "Mileage vs current tread depth rank", spearman.statistic, spearman.pvalue, "correlated" if spearman.pvalue < 0.05 else "not correlated"])
+    size_groups = [g["wear_rate_mm_10000km"].values for _, g in df.groupby("rim_inch") if len(g) > 2]
+    size_anova = stats.f_oneway(*size_groups)
+    rows.append(["ANOVA", "Wear-rate means across rim sizes", size_anova.statistic, size_anova.pvalue, "different" if size_anova.pvalue < 0.05 else "not different"])
+    width_corr = stats.spearmanr(df["width_mm"], df["wear_rate_mm_10000km"])
+    rows.append(["Spearman", "Tyre width vs wear-rate rank", width_corr.statistic, width_corr.pvalue, "correlated" if width_corr.pvalue < 0.05 else "not correlated"])
     return pd.DataFrame(rows, columns=["test", "question", "statistic", "p_value", "decision"]).round({"statistic": 5, "p_value": 8})
 
 
@@ -150,7 +155,8 @@ def ml_and_clusters(df: pd.DataFrame) -> tuple[dict, pd.DataFrame, pd.DataFrame,
     features = [
         "brand", "tyre_size", "season_type", "tyre_segment", "vehicle_type", "drive_type", "wheel_position",
         "country", "region", "climate_zone", "road_type", "mileage_km", "td_current_mm", "wear_rate_mm_10000km",
-        "vehicle_weight_kg", "noise_db", "rolling_resistance", "price_eur", "cost_per_1000km",
+        "vehicle_weight_kg", "width_mm", "aspect_ratio", "rim_inch", "td_initial_mm", "noise_db",
+        "rolling_resistance", "price_eur", "cost_per_1000km",
     ]
     categorical = ["brand", "tyre_size", "season_type", "tyre_segment", "vehicle_type", "drive_type", "wheel_position", "country", "region", "climate_zone", "road_type"]
     X = df[features]
@@ -184,13 +190,20 @@ def ml_and_clusters(df: pd.DataFrame) -> tuple[dict, pd.DataFrame, pd.DataFrame,
         proba = pipe.predict_proba(X_test_c)[:, 1]
         clf_metrics.append({"model": name, "accuracy": round(accuracy_score(y_test_c, pred), 4), "f1": round(f1_score(y_test_c, pred), 4), "roc_auc": round(roc_auc_score(y_test_c, proba), 4)})
 
-    cluster_features = ["td_current_mm", "wear_rate_mm_10000km", "remaining_life_km", "cost_per_1000km", "vehicle_weight_kg", "rolling_resistance"]
+    cluster_features = [
+        "td_current_mm", "wear_rate_mm_10000km", "remaining_life_km", "cost_per_1000km",
+        "vehicle_weight_kg", "width_mm", "aspect_ratio", "rim_inch", "rolling_resistance",
+    ]
     scaled = StandardScaler().fit_transform(df[cluster_features])
     kmeans = KMeans(n_clusters=5, random_state=42, n_init="auto").fit(scaled)
     gmm = GaussianMixture(n_components=5, random_state=42).fit(scaled)
     dbscan = DBSCAN(eps=0.85, min_samples=20).fit(scaled)
     pca = PCA(n_components=2, random_state=42).fit_transform(scaled)
-    clusters = df[["tyre_id", "brand", "tyre_size", "country", "region", "risk_class", "td_current_mm", "wear_rate_mm_10000km", "remaining_life_km", "cost_per_1000km", "latitude", "longitude"]].copy()
+    clusters = df[[
+        "tyre_id", "brand", "tyre_size", "width_mm", "aspect_ratio", "rim_inch", "country",
+        "region", "risk_class", "td_current_mm", "wear_rate_mm_10000km", "remaining_life_km",
+        "cost_per_1000km", "latitude", "longitude",
+    ]].copy()
     clusters["kmeans_cluster"] = kmeans.labels_
     clusters["gmm_cluster"] = gmm.predict(scaled)
     clusters["dbscan_cluster"] = dbscan.labels_
@@ -210,6 +223,38 @@ def ml_and_clusters(df: pd.DataFrame) -> tuple[dict, pd.DataFrame, pd.DataFrame,
     }
     metrics = {"regression": reg_metrics, "classification": clf_metrics, "clustering": clustering_metrics}
     return metrics, clusters, cluster_summary, pd.DataFrame(pca, columns=["pca_1", "pca_2"])
+
+
+def dimension_outputs(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    dimension = df.groupby(["tyre_size", "width_mm", "aspect_ratio", "rim_inch"], as_index=False).agg(
+        observations=("tyre_id", "count"),
+        brands=("brand", "nunique"),
+        td_avg_mm=("td_current_mm", "mean"),
+        td_min_mm=("td_current_mm", "min"),
+        wear_rate_avg=("wear_rate_mm_10000km", "mean"),
+        remaining_life_avg_km=("remaining_life_km", "mean"),
+        cost_per_1000km_avg=("cost_per_1000km", "mean"),
+        risk_share_pct=("risk_binary", lambda s: s.mean() * 100),
+        price_avg_eur=("price_eur", "mean"),
+        noise_avg_db=("noise_db", "mean"),
+        rolling_resistance_avg=("rolling_resistance", "mean"),
+    ).sort_values(["observations", "risk_share_pct"], ascending=[False, False])
+    monthly = (
+        df.set_index("measurement_date")
+        .groupby(["tyre_size", "rim_inch", pd.Grouper(freq="ME")])
+        .agg(
+            observations=("tyre_id", "count"),
+            td_avg_mm=("td_current_mm", "mean"),
+            wear_rate_avg=("wear_rate_mm_10000km", "mean"),
+            risk_share_pct=("risk_binary", lambda s: s.mean() * 100),
+        )
+        .reset_index()
+        .rename(columns={"measurement_date": "month"})
+    )
+    for frame in (dimension, monthly):
+        numeric_cols = frame.select_dtypes(include=[np.number]).columns
+        frame[numeric_cols] = frame[numeric_cols].round(4)
+    return dimension, monthly
 
 
 def recommendation_outputs(df: pd.DataFrame) -> pd.DataFrame:
@@ -237,8 +282,13 @@ def main() -> None:
     monthly, annual = resample_outputs(clean)
     tests = hypothesis_tests(clean)
     ml_metrics, clusters, cluster_summary, _ = ml_and_clusters(clean)
+    dimension_patterns, dimension_monthly = dimension_outputs(clean)
     recommended = recommendation_outputs(clean)
-    corr = clean[["td_current_mm", "wear_rate_mm_10000km", "remaining_life_km", "predicted_life_km", "cost_per_1000km", "vehicle_weight_kg", "rolling_resistance", "noise_db", "mileage_km"]].corr()
+    corr = clean[[
+        "td_current_mm", "wear_rate_mm_10000km", "remaining_life_km", "predicted_life_km",
+        "cost_per_1000km", "vehicle_weight_kg", "width_mm", "aspect_ratio", "rim_inch",
+        "rolling_resistance", "noise_db", "mileage_km",
+    ]].corr()
     country_patterns = clean.groupby(["country", "region"], as_index=False).agg(
         td_avg_mm=("td_current_mm", "mean"),
         wear_rate_avg=("wear_rate_mm_10000km", "mean"),
@@ -263,6 +313,8 @@ def main() -> None:
     pd.DataFrame(ml_metrics["classification"]).to_csv(OUTPUT_DIR / "ml_classification_metrics.csv", index=False)
     clusters.to_csv(OUTPUT_DIR / "tyre_clusters.csv", index=False)
     cluster_summary.to_csv(OUTPUT_DIR / "cluster_summary.csv", index=False)
+    dimension_patterns.to_csv(OUTPUT_DIR / "dimension_performance.csv", index=False)
+    dimension_monthly.to_csv(OUTPUT_DIR / "dimension_monthly_patterns.csv", index=False)
     recommended.to_csv(OUTPUT_DIR / "recommendation_scores.csv", index=False)
     corr.to_csv(OUTPUT_DIR / "correlation_matrix.csv")
     country_patterns.to_csv(OUTPUT_DIR / "country_risk_patterns.csv", index=False)
@@ -273,6 +325,7 @@ def main() -> None:
         "machine_learning": ml_metrics,
         "patterns": {
             "highest_risk_region": country_patterns.sort_values("risk_share_pct", ascending=False).iloc[0].to_dict(),
+            "highest_risk_dimension": dimension_patterns.sort_values("risk_share_pct", ascending=False).iloc[0].to_dict(),
             "best_recommended_tyre": recommended.iloc[0][["tyre_id", "brand", "model", "tyre_size", "country", "recommended_tyre_score"]].to_dict(),
         },
     }
