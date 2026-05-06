@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -94,7 +95,18 @@ def tread_depth() -> None:
     st.plotly_chart(px.box(df, x="brand", y="td_current_mm", color="brand", title="TD by brand"), width="stretch")
     st.plotly_chart(px.box(df, x="tyre_size", y="wear_rate_mm_10000km", color="wheel_position", title="Wear rate by tyre size and wheel position"), width="stretch")
     sample = df.sample(min(4000, len(df)), random_state=42)
-    st.plotly_chart(px.scatter(sample, x="mileage_km", y="td_current_mm", color="risk_class", trendline="ols", title="TD vs mileage"), width="stretch")
+    fig = px.scatter(sample, x="mileage_km", y="td_current_mm", color="risk_class", title="TD vs mileage")
+    regression_data = sample[["mileage_km", "td_current_mm"]].dropna().sort_values("mileage_km")
+    if len(regression_data) > 1:
+        slope, intercept = np.polyfit(regression_data["mileage_km"], regression_data["td_current_mm"], 1)
+        fig.add_scatter(
+            x=regression_data["mileage_km"],
+            y=slope * regression_data["mileage_km"] + intercept,
+            mode="lines",
+            name="Linear trend",
+            line={"color": "#111827", "width": 3},
+        )
+    st.plotly_chart(fig, width="stretch")
 
 
 def statistical_tests() -> None:
