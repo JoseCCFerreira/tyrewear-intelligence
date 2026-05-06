@@ -1,10 +1,10 @@
 # TyreWear Intelligence Snapshot
 
-Generated at: `2026-05-06T10:45:56`
+Generated at: `2026-05-06T10:51:42`
 
 ## Repository
 
-- Latest commit: `9f1db62 docs: refresh full analytics snapshot`
+- Latest commit: `f291126 feat: build professional tyrewear intelligence platform`
 - Remote: `origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)
 origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 
@@ -28,7 +28,7 @@ origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 | `scripts/create_snapshot.py` | 3371 bytes |
 | `data/raw/sample_tyre_dataset.csv` | 695529 bytes |
 | `data/processed/tyrewear.sqlite` | 937984 bytes |
-| `data/processed/tyrewear.duckdb` | 5255168 bytes |
+| `data/processed/tyrewear.duckdb` | 4730880 bytes |
 | `data/processed/tyrewear_europe_clean.csv` | 825363 bytes |
 | `data/processed/tyrewear_europe_monthly_resampled.csv` | 56497 bytes |
 | `data/processed/tyrewear_europe_annual_country.csv` | 4885 bytes |
