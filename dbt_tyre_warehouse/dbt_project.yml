@@ -1,0 +1,22 @@
+name: tyrewear_intelligence
+version: "1.0.0"
+config-version: 2
+profile: tyrewear_intelligence
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+models:
+  tyrewear_intelligence:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+seeds:
+  tyrewear_intelligence:
+    sample_tyre_dataset:
+      +column_types:
+        tyre_id: varchar

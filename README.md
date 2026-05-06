@@ -1,103 +1,302 @@
 # TyreWear Intelligence
 
-Premium portfolio landing page and technical support documentation for a tyre analytics project.
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-red)
+![DuckDB](https://img.shields.io/badge/DuckDB-analytics-yellow)
+![dbt](https://img.shields.io/badge/dbt-modeling-orange)
+![ML](https://img.shields.io/badge/Machine%20Learning-scikit--learn-green)
 
-The project explains a local-first analytics platform for tyre comparison, tread-depth statistics,
-machine learning, dashboarding and AI-assisted decision support.
+**Predictive tyre analytics for safety, durability and cost optimization.**
 
-## Files
+TyreWear Intelligence is a professional portfolio project for tyre analysis. It studies tread depth, wear rate, remaining life, cost per km, safety, energy efficiency, noise, geography and user profile to support better tyre decisions.
 
-```text
-index.html
-style.css
-technical_support.html
-scripts/test_deep_learning.py
-scripts/create_snapshot.py
-snapshots/
-```
+## Business Problem
 
-## Run The HTML
+Buying tyres only by price is incomplete. A cheaper tyre can wear faster, increase risk, create higher cost per km and reduce safety. This project compares tyres using statistical evidence, machine learning and interactive decision support.
 
-Open directly in the browser:
+## Solution Overview
 
-```bash
-open index.html
-open technical_support.html
-```
+The platform provides a realistic end-to-end MVP:
 
-Or serve locally:
+- realistic tyre dataset
+- SQLite transactional layer
+- DuckDB analytical layer
+- dbt staging/intermediate/marts
+- Streamlit multipage app
+- descriptive statistics and p-value tests
+- correlation analysis
+- K-Means, DBSCAN and GMM clustering
+- ML regression and classification
+- TensorFlow/PyTorch examples used with clear purpose
+- geographic map
+- personalized weighted recommender
+- AI advisor MVP
 
-```bash
-python3 -m http.server 8570
-```
-
-Then open:
-
-```text
-http://localhost:8570/index.html
-http://localhost:8570/technical_support.html
-```
-
-## Test PyTorch And TensorFlow
-
-The deep learning smoke test creates synthetic tyre data and trains one tiny PyTorch model and one
-tiny TensorFlow model to predict tyre life in kilometres.
-
-```bash
-python3 scripts/test_deep_learning.py
-```
-
-Output is written to:
+## Architecture
 
 ```text
-snapshots/deep_learning_test_results.json
+Public / Simulated Data Sources
+        ↓
+SQLite transactional database
+        ↓
+DuckDB analytical database
+        ↓
+dbt staging → intermediate → marts
+        ↓
+Statistics → Clustering → Machine Learning
+        ↓
+Streamlit App → AI Advisor
 ```
 
-## Create Snapshot
+## Role-Based Project Breakdown
 
-Run the full data, statistics, ML, deep learning and snapshot pipeline:
+### Data Analyst Skills
+
+- KPIs, dashboards, filters, maps and visual storytelling
+- Tread depth analysis by brand, tyre size, wheel position and region
+- Business metrics: average TD, minimum TD, wear rate, remaining life, cost per 1000 km and risk share
+- Tools: SQL, pandas, Plotly, Streamlit, DuckDB, CSV
+
+### Analytics Engineer Skills
+
+- dbt staging, intermediate and marts
+- data lineage, metric definitions and model documentation
+- tests for accepted values, not-null, uniqueness and valid ranges
+- Tools: SQL, dbt, DuckDB, SQLite, YAML
+
+### Data Scientist Skills
+
+- hypothesis tests, p-values, normality, Levene, t-tests, ANOVA, Mann-Whitney, Kruskal-Wallis and chi-square
+- correlation analysis using Pearson and Spearman
+- clustering using K-Means, DBSCAN, GMM and PCA
+- predictive modelling and model evaluation
+- Tools: Python, pandas, numpy, scipy, scikit-learn, Plotly
+
+### Data Engineer Skills
+
+- local ingestion pipeline
+- raw, processed and output data layers
+- SQLite and DuckDB creation scripts
+- data quality checks and reproducible orchestration
+- Tools: Python, pathlib, pandas, SQLite, DuckDB, logging-ready scripts
+
+### Machine Learning Engineer Skills
+
+- scikit-learn pipelines
+- model comparison
+- local model-output generation
+- TensorFlow tabular regression
+- PyTorch tabular regression/classification smoke tests
+- Streamlit integration for outputs and inference-oriented recommendations
+
+## Features
+
+- Overview KPIs
+- Data Explorer with CSV upload and download
+- Tread Depth Analysis
+- Statistical Tests
+- Correlation Analysis
+- Clustering
+- Machine Learning
+- Deep Learning
+- Geo Map
+- Tyre Recommendation
+- AI Advisor
+- Role-Based Skills Map
+- Methodology
+
+## Data Sources
+
+The MVP uses a realistic simulated dataset. Future sources can include:
+
+- NHTSA / UTQG
+- EPREL
+- public tyre tests when licensing permits
+- weather data
+- geographic data
+- owned tread-depth measurements
+- tyre images
+
+## Data Model
+
+Main dataset columns include tyre identity, brand, model, tyre size, TD measurements, wear, cost, risk, vehicle profile, geography and coordinates.
+
+The generated file is:
+
+```text
+data/raw/sample_tyre_dataset.csv
+```
+
+## dbt Workflow
+
+Use a separate dbt environment because current dbt releases require `protobuf>=6`, while TensorFlow 2.16 requires `protobuf<5`.
+
+```bash
+python3 -m venv .venv-dbt
+source .venv-dbt/bin/activate
+pip install -r ../requirements-dbt.txt
+cd dbt_tyre_warehouse
+dbt seed --profiles-dir .
+dbt build --profiles-dir .
+dbt docs generate --profiles-dir .
+deactivate
+```
+
+The dbt project contains:
+
+- staging models
+- intermediate models
+- marts
+- schema tests
+- range validation test
+
+## Statistical Methodology
+
+The project includes:
+
+- Shapiro-Wilk
+- Kolmogorov-Smirnov
+- Levene
+- t-test
+- Welch t-test
+- ANOVA
+- Mann-Whitney
+- Kruskal-Wallis
+- Chi-square
+- Pearson
+- Spearman
+
+## Clustering Methodology
+
+Implemented:
+
+- K-Means
+- DBSCAN
+- Gaussian Mixture Models
+- PCA projection
+- Silhouette Score
+- Davies-Bouldin Score
+
+Roadmap:
+
+- UMAP
+- t-SNE
+- hierarchical clustering
+
+## Machine Learning Methodology
+
+Targets:
+
+- `td_future_mm`
+- `wear_rate_mm_10000km`
+- `remaining_life_km`
+- `risk_class`
+- `cost_per_1000km`
+- `recommended_tyre_score`
+
+Implemented MVP:
+
+- Ridge regression
+- Random Forest regression
+- Gradient Boosting regression
+- Logistic Regression classification
+- Random Forest classification
+
+## TensorFlow / PyTorch Usage
+
+TensorFlow and PyTorch are not used just for fashion. They are included where they can add value:
+
+- tabular neural-network comparison
+- future image classification of tyre wear
+- future time series for repeated TD measurements
+- future embeddings for personalized recommendations
+
+For small tabular datasets, scikit-learn models remain the MVP baseline.
+
+## Geographic Analysis
+
+The Streamlit app includes a map of European country/city observations with:
+
+- average TD
+- wear rate
+- risk share
+- number of tyres
+- filters by country, region and brand
+
+## Installation
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+For dbt, use `requirements-dbt.txt` in a separate virtual environment.
+
+## How To Run
 
 ```bash
 python3 scripts/run_full_pipeline.py
-```
-
-```bash
-python3 scripts/create_snapshot.py
-```
-
-## Streamlit Results App
-
-```bash
 streamlit run app.py --server.port 8580
+python3 -m http.server 8570
 ```
 
-Then open:
+Open:
 
 ```text
 http://localhost:8580
+http://localhost:8570/docs_html/index.html
 ```
 
-The app shows raw data, cleaning, distributions, regional/country time trends, hypothesis tests,
-classic ML, clusters, PyTorch/TensorFlow results and generated outputs.
-
-Outputs:
+## Repository Structure
 
 ```text
-snapshots/project_snapshot.json
-snapshots/project_snapshot.md
+app.py
+pages/
+src/
+scripts/
+data/raw/
+data/processed/
+data/outputs/
+dbt_tyre_warehouse/
+docs/
+docs_html/
+snapshots/
 ```
 
-## Git
+## Roadmap
 
-```bash
-git init
-git add .
-git commit -m "feat: create tyrewear intelligence landing"
-```
+### Phase 1 — MVP Analytics
 
-Add a remote before pushing:
+Dataset, overview, filters, KPIs, TD analysis, map, README and HTML page.
 
-```bash
-git remote add origin <repo-url>
-git push -u origin main
-```
+### Phase 2 — Analytics Engineering
+
+SQLite, DuckDB, dbt models, dbt tests, dbt docs and data dictionary.
+
+### Phase 3 — Statistical & Clustering Layer
+
+Automatic tests, correlations, K-Means, DBSCAN, PCA/UMAP and interpretation.
+
+### Phase 4 — Machine Learning
+
+Wear-rate prediction, remaining-life prediction, risk classification and feature importance.
+
+### Phase 5 — Deep Learning
+
+TensorFlow tabular regression, PyTorch classification, CNN for images and embeddings.
+
+### Phase 6 — Productization
+
+API, Docker, CI/CD, MLflow, deployment and monitoring.
+
+## Limitations
+
+- The dataset is simulated but realistic.
+- Deep learning examples are educational MVP examples.
+- Image classification is documented as a future phase.
+- dbt requires a local dbt-duckdb installation to run.
+
+## Author
+
+Created by Jose Carlos Ferreira as a professional portfolio project covering Data Analyst, Analytics Engineer, Data Scientist, Data Engineer and Machine Learning Engineer skills.

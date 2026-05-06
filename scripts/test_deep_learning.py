@@ -63,31 +63,32 @@ def build_pipeline_tyre_data() -> tuple[np.ndarray, np.ndarray, dict]:
         }
     df = pd.read_csv(PROCESSED_PATH)
     feature_cols = [
-        "monthly_km",
-        "cumulative_km",
-        "tyre_age_months",
+        "mileage_km",
+        "vehicle_weight_kg",
         "tread_depth_mm",
-        "wear_rate_mm_per_1000km",
+        "wear_rate_mm_10000km",
         "price_eur",
-        "cost_per_km",
-        "wet_grip_score",
-        "energy_efficiency_score",
+        "cost_per_1000km",
         "noise_db",
+        "rolling_resistance",
+        "td_inner_mm",
+        "td_center_mm",
+        "td_outer_mm",
+        "wear_mm",
+        "predicted_life_km",
         "road_roughness",
-        "avg_temp_c",
-        "rain_index",
-        "season_match",
     ]
-    work = df[feature_cols + ["projected_life_km"]].dropna()
-    features = work[feature_cols].to_numpy(dtype="float32")
-    target_raw = work["projected_life_km"].to_numpy(dtype="float32").reshape(-1, 1)
+    existing = [col for col in feature_cols if col in df.columns]
+    work = df[existing + ["remaining_life_km"]].dropna()
+    features = work[existing].to_numpy(dtype="float32")
+    target_raw = work["remaining_life_km"].to_numpy(dtype="float32").reshape(-1, 1)
     features = (features - features.mean(axis=0)) / features.std(axis=0)
     target = (target_raw - target_raw.mean()) / target_raw.std()
     return features, target.astype("float32"), {
         "source": "data/processed/tyrewear_europe_clean.csv",
         "rows": int(features.shape[0]),
         "features": int(features.shape[1]),
-        "target": "standardized projected_life_km",
+        "target": "standardized remaining_life_km",
     }
 
 

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -10,162 +9,189 @@ import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT_DIR / "data" / "raw"
+DBT_SEED_DIR = ROOT_DIR / "dbt_tyre_warehouse" / "seeds"
 SEED = 42
 
 COUNTRIES = {
-    "Portugal": {"region": "Southern Europe", "temp": 17.5, "road": 0.50, "rain": 0.42},
-    "Spain": {"region": "Southern Europe", "temp": 18.5, "road": 0.48, "rain": 0.35},
-    "France": {"region": "Western Europe", "temp": 13.5, "road": 0.56, "rain": 0.55},
-    "Germany": {"region": "Western Europe", "temp": 10.5, "road": 0.62, "rain": 0.58},
-    "Netherlands": {"region": "Western Europe", "temp": 10.0, "road": 0.54, "rain": 0.66},
-    "Italy": {"region": "Southern Europe", "temp": 16.0, "road": 0.53, "rain": 0.44},
-    "Sweden": {"region": "Northern Europe", "temp": 5.5, "road": 0.65, "rain": 0.50},
-    "Norway": {"region": "Northern Europe", "temp": 4.5, "road": 0.68, "rain": 0.57},
-    "Poland": {"region": "Eastern Europe", "temp": 8.7, "road": 0.60, "rain": 0.50},
-    "Czechia": {"region": "Eastern Europe", "temp": 9.2, "road": 0.58, "rain": 0.48},
+    "Portugal": ("Southern Europe", "Lisbon", 38.7223, -9.1393, "mediterranean", 0.50),
+    "Spain": ("Southern Europe", "Madrid", 40.4168, -3.7038, "mediterranean", 0.48),
+    "Italy": ("Southern Europe", "Milan", 45.4642, 9.19, "mediterranean", 0.53),
+    "France": ("Western Europe", "Lyon", 45.764, 4.8357, "temperate", 0.56),
+    "Germany": ("Western Europe", "Berlin", 52.52, 13.405, "continental", 0.62),
+    "Netherlands": ("Western Europe", "Amsterdam", 52.3676, 4.9041, "oceanic", 0.54),
+    "Sweden": ("Northern Europe", "Stockholm", 59.3293, 18.0686, "cold", 0.65),
+    "Norway": ("Northern Europe", "Oslo", 59.9139, 10.7522, "cold", 0.68),
+    "Poland": ("Eastern Europe", "Warsaw", 52.2297, 21.0122, "continental", 0.60),
+    "Czechia": ("Eastern Europe", "Prague", 50.0755, 14.4378, "continental", 0.58),
 }
+BRANDS = {
+    "Michelin": ("premium", 1.14, 1.22),
+    "Continental": ("premium", 1.11, 1.18),
+    "Goodyear": ("premium", 1.06, 1.11),
+    "Pirelli": ("premium", 1.03, 1.12),
+    "Bridgestone": ("mid-range", 1.02, 1.04),
+    "Hankook": ("mid-range", 0.97, 0.92),
+    "Yokohama": ("mid-range", 0.95, 0.90),
+    "BudgetRoad": ("budget", 0.84, 0.70),
+}
+TYRE_SIZES = ["195/65 R15", "205/55 R16", "225/45 R17", "235/45 R18", "255/40 R19"]
+SEASON_TYPES = ["summer", "winter", "all-season"]
+VEHICLE_TYPES = ["city", "family", "suv", "ev", "fleet"]
+DRIVE_TYPES = ["fwd", "rwd", "awd"]
+WHEEL_POSITIONS = ["front_left", "front_right", "rear_left", "rear_right"]
+ROAD_TYPES = ["urban", "highway", "mixed", "mountain", "rural"]
 
-BRANDS = ["Michelin", "Continental", "Goodyear", "Pirelli", "Bridgestone", "Hankook", "Nokian", "Yokohama"]
-SEASONS = ["summer", "winter", "all-season"]
-DIMENSIONS = ["205/55 R16", "225/45 R17", "235/45 R18", "195/65 R15", "255/40 R19"]
-VEHICLE_TYPES = ["city", "family", "suv", "fleet", "ev"]
+
+def parse_size(size: str) -> tuple[int, int, int]:
+    width = int(size.split("/")[0])
+    aspect = int(size.split("/")[1].split(" ")[0])
+    rim = int(size.split("R")[1])
+    return width, aspect, rim
 
 
-def season_for_month(month: int) -> str:
+def season_of_year(month: int) -> str:
     if month in {12, 1, 2}:
         return "winter"
+    if month in {3, 4, 5}:
+        return "spring"
     if month in {6, 7, 8}:
         return "summer"
-    return "mild"
+    return "autumn"
 
 
-def build_rows(rows: int = 18_000) -> pd.DataFrame:
-    random.seed(SEED)
+def build_dataset(rows: int = 2500) -> pd.DataFrame:
     rng = np.random.default_rng(SEED)
+    random.seed(SEED)
     dates = pd.date_range("2019-01-01", "2025-12-31", freq="D")
     records = []
     for idx in range(rows):
         country = random.choice(list(COUNTRIES))
-        context = COUNTRIES[country]
-        observed_at = random.choice(dates)
-        weather_season = season_for_month(observed_at.month)
-        tyre_season = random.choices(SEASONS, weights=[0.42, 0.24, 0.34], k=1)[0]
-        brand = random.choice(BRANDS)
+        region, city, lat, lon, climate_zone, country_roughness = COUNTRIES[country]
+        brand = random.choice(list(BRANDS))
+        segment, durability_factor, price_factor = BRANDS[brand]
+        tyre_size = random.choice(TYRE_SIZES)
+        width, aspect, rim = parse_size(tyre_size)
+        season_type = random.choice(SEASON_TYPES)
         vehicle_type = random.choice(VEHICLE_TYPES)
-        dimension = random.choice(DIMENSIONS)
+        drive_type = random.choice(DRIVE_TYPES)
+        wheel_position = random.choice(WHEEL_POSITIONS)
+        road_type = random.choice(ROAD_TYPES)
+        measurement_date = random.choice(dates)
+        season = season_of_year(measurement_date.month)
 
-        brand_quality = {
-            "Michelin": 1.12,
-            "Continental": 1.09,
-            "Goodyear": 1.04,
-            "Pirelli": 1.00,
-            "Bridgestone": 1.03,
-            "Hankook": 0.96,
-            "Nokian": 1.06,
-            "Yokohama": 0.94,
-        }[brand]
-        season_match = int(
-            (weather_season == "winter" and tyre_season == "winter")
-            or (weather_season == "summer" and tyre_season == "summer")
-            or (weather_season == "mild" and tyre_season == "all-season")
+        vehicle_weight_kg = {
+            "city": rng.normal(1220, 120),
+            "family": rng.normal(1500, 170),
+            "suv": rng.normal(1840, 210),
+            "ev": rng.normal(1980, 240),
+            "fleet": rng.normal(1650, 190),
+        }[vehicle_type]
+        mileage_km = max(1200, rng.gamma(4.5, 6200))
+        td_initial_mm = rng.uniform(7.2, 8.9)
+        position_factor = 1.12 if wheel_position.startswith("front") and drive_type == "fwd" else 1.0
+        position_factor += 0.08 if wheel_position.startswith("rear") and drive_type == "rwd" else 0
+        road_factor = {"urban": 0.95, "highway": 0.88, "mixed": 1.0, "mountain": 1.16, "rural": 1.08}[road_type]
+        climate_factor = {"mediterranean": 1.03, "temperate": 1.0, "continental": 1.07, "oceanic": 1.04, "cold": 1.11}[climate_zone]
+        season_match = (season_type == "winter" and season == "winter") or (season_type == "summer" and season == "summer") or (season_type == "all-season" and season in {"spring", "autumn"})
+        weight_factor = 1 + max(vehicle_weight_kg - 1450, 0) / 6000
+        wear_rate_mm_10000km = (
+            1.18
+            * road_factor
+            * climate_factor
+            * position_factor
+            * weight_factor
+            * country_roughness
+            / durability_factor
+            * (0.92 if season_match else 1.08)
+            + rng.normal(0, 0.12)
         )
-        monthly_km = max(220, rng.normal(1350, 390))
-        tyre_age_months = rng.integers(1, 54)
-        cumulative_km = monthly_km * tyre_age_months * rng.uniform(0.82, 1.18)
-        initial_tread_depth_mm = rng.normal(8.1, 0.45)
-        road_roughness = np.clip(rng.normal(context["road"], 0.08), 0.25, 0.88)
-        avg_temp_c = rng.normal(context["temp"], 5.2)
-        rain_index = np.clip(rng.normal(context["rain"], 0.12), 0.05, 0.95)
-        ev_penalty = 0.08 if vehicle_type == "ev" else 0.0
-        suv_penalty = 0.06 if vehicle_type == "suv" else 0.0
-
-        wear_rate_mm_per_1000km = (
-            0.115
-            + road_roughness * 0.085
-            + rain_index * 0.035
-            + max(avg_temp_c - 20, 0) * 0.002
-            + ev_penalty
-            + suv_penalty
-            - (brand_quality - 1.0) * 0.075
-            - season_match * 0.018
-            + rng.normal(0, 0.018)
-        )
-        wear_rate_mm_per_1000km = max(0.055, wear_rate_mm_per_1000km)
-        tread_depth_mm = initial_tread_depth_mm - wear_rate_mm_per_1000km * (cumulative_km / 1000)
-        tread_depth_mm = np.clip(tread_depth_mm + rng.normal(0, 0.22), 1.2, 8.8)
-        projected_life_km = max(12_000, ((initial_tread_depth_mm - 1.6) / wear_rate_mm_per_1000km) * 1000)
-        price_eur = (
-            62
-            + brand_quality * 45
-            + DIMENSIONS.index(dimension) * 16
-            + (vehicle_type == "ev") * 22
-            + rng.normal(0, 13)
-        )
-        price_eur = max(48, price_eur)
-        cost_per_km = price_eur / projected_life_km
-        wet_grip_score = np.clip(2.2 + brand_quality * 0.7 + season_match * 0.22 - road_roughness * 0.2 + rng.normal(0, 0.35), 1, 5)
-        energy_efficiency_score = np.clip(3.7 - wear_rate_mm_per_1000km * 2.2 + brand_quality * 0.25 + rng.normal(0, 0.35), 1, 5)
-        noise_db = np.clip(73 - brand_quality * 1.4 + road_roughness * 2.5 + rng.normal(0, 1.7), 66, 78)
-        risk_score = (
-            (3.2 - tread_depth_mm) * 0.55
-            + wear_rate_mm_per_1000km * 3.2
-            + road_roughness * 0.65
-            + (1 - wet_grip_score / 5) * 0.75
-            - season_match * 0.25
-        )
-        high_wear_risk = int(risk_score > 0.72)
+        wear_rate_mm_10000km = max(0.35, wear_rate_mm_10000km)
+        wear_mm = wear_rate_mm_10000km * mileage_km / 10000
+        td_current_mm = float(np.clip(td_initial_mm - wear_mm, 1.1, 8.7))
+        side_bias = rng.normal(0, 0.18)
+        td_inner_mm = float(np.clip(td_current_mm - abs(side_bias) - rng.uniform(0, 0.22), 1.0, 8.8))
+        td_center_mm = float(np.clip(td_current_mm + rng.normal(0, 0.08), 1.0, 8.8))
+        td_outer_mm = float(np.clip(td_current_mm - abs(rng.normal(0, 0.16)), 1.0, 8.8))
+        remaining_life_km = max(0, (td_current_mm - 1.6) / wear_rate_mm_10000km * 10000)
+        predicted_life_km = mileage_km + remaining_life_km
+        price_eur = max(45, (58 + width * 0.22 + rim * 8.5 + (vehicle_type == "ev") * 20) * price_factor + rng.normal(0, 12))
+        cost_per_1000km = price_eur / max(predicted_life_km, 1) * 1000
+        fuel_efficiency_class = random.choices(list("ABCDE"), weights=[durability_factor, 1.3, 1.1, 0.8, 0.4], k=1)[0]
+        wet_grip_class = random.choices(list("ABCDE"), weights=[durability_factor * (1.15 if season_match else 0.9), 1.2, 0.9, 0.55, 0.3], k=1)[0]
+        rolling_resistance = float(np.clip(7.5 - "ABCDE".index(fuel_efficiency_class) + rng.normal(0, 0.45), 1, 10))
+        noise_db = float(np.clip(73 - durability_factor * 1.2 + road_factor * 1.5 + rng.normal(0, 1.3), 66, 78))
+        if td_current_mm < 1.8 or remaining_life_km < 2500:
+            risk_class = "critical"
+        elif td_current_mm < 2.8 or remaining_life_km < 8000:
+            risk_class = "high"
+        elif td_current_mm < 4.0 or remaining_life_km < 18000:
+            risk_class = "medium"
+        else:
+            risk_class = "low"
+        cluster_id = {"low": 0, "medium": 1, "high": 2, "critical": 3}[risk_class]
 
         records.append(
             {
-                "observation_id": f"OBS{idx + 1:06d}",
-                "observed_at": observed_at.date().isoformat(),
-                "year": observed_at.year,
-                "month": observed_at.month,
-                "country": country,
-                "europe_region": context["region"],
+                "tyre_id": f"TYR{idx + 1:05d}",
                 "brand": brand,
                 "model": f"{brand[:3].upper()}-{random.choice(['Eco', 'Grip', 'Tour', 'Drive', 'Sport'])}-{random.randint(100, 999)}",
-                "dimension": dimension,
-                "tyre_season": tyre_season,
-                "weather_season": weather_season,
+                "tyre_size": tyre_size,
+                "width_mm": width,
+                "aspect_ratio": aspect,
+                "rim_inch": rim,
+                "season_type": season_type,
+                "tyre_segment": segment,
                 "vehicle_type": vehicle_type,
-                "monthly_km": round(monthly_km, 1),
-                "cumulative_km": round(cumulative_km, 1),
-                "tyre_age_months": int(tyre_age_months),
-                "initial_tread_depth_mm": round(initial_tread_depth_mm, 2),
-                "tread_depth_mm": round(tread_depth_mm, 2),
-                "wear_rate_mm_per_1000km": round(wear_rate_mm_per_1000km, 4),
-                "projected_life_km": round(projected_life_km, 0),
-                "price_eur": round(price_eur, 2),
-                "cost_per_km": round(cost_per_km, 5),
-                "wet_grip_score": round(wet_grip_score, 2),
-                "energy_efficiency_score": round(energy_efficiency_score, 2),
+                "vehicle_weight_kg": round(vehicle_weight_kg, 0),
+                "drive_type": drive_type,
+                "wheel_position": wheel_position,
+                "country": country,
+                "region": region,
+                "city": city,
+                "latitude": round(lat + rng.normal(0, 0.08), 5),
+                "longitude": round(lon + rng.normal(0, 0.08), 5),
+                "climate_zone": climate_zone,
+                "road_type": road_type,
+                "measurement_date": measurement_date.date().isoformat(),
+                "season_of_year": season,
+                "mileage_km": round(mileage_km, 0),
+                "td_initial_mm": round(td_initial_mm, 2),
+                "td_current_mm": round(td_current_mm, 2),
+                "td_inner_mm": round(td_inner_mm, 2),
+                "td_center_mm": round(td_center_mm, 2),
+                "td_outer_mm": round(td_outer_mm, 2),
+                "wear_mm": round(max(0, wear_mm), 2),
+                "wear_rate_mm_10000km": round(wear_rate_mm_10000km, 3),
+                "predicted_life_km": round(predicted_life_km, 0),
+                "remaining_life_km": round(remaining_life_km, 0),
+                "fuel_efficiency_class": fuel_efficiency_class,
+                "wet_grip_class": wet_grip_class,
                 "noise_db": round(noise_db, 1),
-                "road_roughness": round(road_roughness, 3),
-                "avg_temp_c": round(avg_temp_c, 1),
-                "rain_index": round(rain_index, 3),
-                "season_match": season_match,
-                "high_wear_risk": high_wear_risk,
+                "rolling_resistance": round(rolling_resistance, 2),
+                "price_eur": round(price_eur, 2),
+                "cost_per_1000km": round(cost_per_1000km, 2),
+                "risk_class": risk_class,
+                "cluster_id": cluster_id,
             }
         )
-
     df = pd.DataFrame(records)
-    dirty = df.copy()
-    for col in ["tread_depth_mm", "price_eur", "wear_rate_mm_per_1000km", "wet_grip_score"]:
-        missing_idx = dirty.sample(frac=0.012, random_state=SEED + len(col)).index
-        dirty.loc[missing_idx, col] = np.nan
-    dupes = dirty.sample(n=120, random_state=SEED)
-    dirty = pd.concat([dirty, dupes], ignore_index=True)
+    dirty = pd.concat([df, df.sample(60, random_state=SEED)], ignore_index=True)
+    for col in ["td_current_mm", "wear_rate_mm_10000km", "price_eur", "remaining_life_km"]:
+        dirty.loc[dirty.sample(frac=0.01, random_state=SEED + len(col)).index, col] = np.nan
     dirty.loc[dirty.sample(frac=0.004, random_state=99).index, "price_eur"] *= -1
     return dirty
 
 
 def main() -> None:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    df = build_rows()
-    output = RAW_DIR / "tyrewear_europe_raw.csv"
-    df.to_csv(output, index=False)
-    print(f"Created raw tyre dataset: {output} ({len(df):,} rows)")
+    DBT_SEED_DIR.mkdir(parents=True, exist_ok=True)
+    df = build_dataset()
+    raw_path = RAW_DIR / "sample_tyre_dataset.csv"
+    seed_path = DBT_SEED_DIR / "sample_tyre_dataset.csv"
+    df.to_csv(raw_path, index=False)
+    df.drop_duplicates("tyre_id").to_csv(seed_path, index=False)
+    print(f"Created dataset: {raw_path} ({len(df):,} rows including dirty duplicates)")
+    print(f"Updated dbt seed: {seed_path}")
 
 
 if __name__ == "__main__":

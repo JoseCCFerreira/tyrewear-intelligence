@@ -1,0 +1,4 @@
+model,mae,r2
+Ridge,5517.74,0.9223
+Random Forest Regressor,733.87,0.9968
+Gradient Boosting Regressor,1129.42,0.9965

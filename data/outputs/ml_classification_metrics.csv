@@ -1,0 +1,3 @@
+model,accuracy,f1,roc_auc
+Logistic Regression,0.996,0.9231,0.9772
+Random Forest Classifier,0.992,0.8333,0.9999

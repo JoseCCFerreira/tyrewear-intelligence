@@ -1,7 +1,12 @@
 test,question,statistic,p_value,decision
-Shapiro-Wilk,Is wear rate normally distributed?,0.97403,3.1438802e-29,non-normal
-Welch t-test,Summer vs winter wear rate mean,1.20503,0.22822224,not different
-Mann-Whitney U,Summer vs winter wear distribution,16624652.0,0.20040468,not different
-ANOVA,Wear rate mean across European regions,120.55089,2.6593961e-77,different
-Kruskal-Wallis,Wear rate distribution across European regions,359.69769,1.18509e-77,different
-Welch t-test,Premium vs value brand projected life,8.89032,6.8708242e-19,different
+Shapiro-Wilk,Wear-rate normality,0.95534,0.0,non-normal
+Kolmogorov-Smirnov,Wear-rate normality vs standard normal,0.0265,0.05867594,normal
+Levene,Equal variance premium vs budget,31.70927,2e-08,different variance
+t-test,Premium vs budget wear-rate mean,-16.40643,0.0,different
+Welch t-test,Premium vs budget wear-rate mean,-12.83882,0.0,different
+ANOVA,Wear-rate means across regions,217.74353,0.0,different
+Mann-Whitney,Premium vs budget distribution,94672.0,0.0,different
+Kruskal-Wallis,Wear-rate distributions across regions,561.54786,0.0,different
+Chi-square,Region vs risk class association,42.71312,2.43e-06,associated
+Pearson,Mileage vs current tread depth,-0.79626,0.0,correlated
+Spearman,Mileage vs current tread depth rank,-0.77571,0.0,correlated

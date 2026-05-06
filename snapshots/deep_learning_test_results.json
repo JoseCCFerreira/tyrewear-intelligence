@@ -1,21 +1,21 @@
 {
   "dataset": {
     "source": "data/processed/tyrewear_europe_clean.csv",
-    "rows": 18000,
-    "features": 14,
-    "target": "standardized projected_life_km"
+    "rows": 2500,
+    "features": 12,
+    "target": "standardized remaining_life_km"
   },
   "tests": [
     {
       "framework": "pytorch",
       "version": "2.2.2",
-      "final_mse": 0.016865,
+      "final_mse": 0.002565,
       "status": "passed"
     },
     {
       "framework": "tensorflow",
       "version": "2.16.1",
-      "final_mse": 0.004775,
+      "final_mse": 5e-06,
       "status": "passed"
     }
   ]

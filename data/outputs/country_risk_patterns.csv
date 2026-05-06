@@ -1,11 +1,11 @@
-country,europe_region,high_risk_share,avg_wear_rate,avg_cost_per_km
-Sweden,Northern Europe,71.42,0.2075,0.0047
-Germany,Western Europe,71.19,0.2065,0.0047
-Norway,Northern Europe,71.08,0.21,0.0048
-France,Western Europe,69.96,0.2038,0.0046
-Poland,Eastern Europe,69.35,0.2037,0.0046
-Czechia,Eastern Europe,68.83,0.2017,0.0046
-Italy,Southern Europe,68.26,0.1963,0.0044
-Netherlands,Western Europe,68.26,0.2029,0.0046
-Portugal,Southern Europe,65.18,0.1938,0.0044
-Spain,Southern Europe,63.52,0.1896,0.0043
+country,region,td_avg_mm,wear_rate_avg,remaining_life_avg_km,cost_per_1000km_avg,risk_share_pct
+Czechia,Eastern Europe,5.5324,0.8663,49826.0966,3.4211,2.9412
+France,Western Europe,6.0898,0.7523,64235.1019,2.9995,0.8163
+Germany,Western Europe,5.5365,0.8792,47837.0354,3.5537,3.937
+Italy,Southern Europe,5.8164,0.7286,62128.1025,2.941,1.8051
+Netherlands,Western Europe,5.9651,0.7533,65054.165,2.9735,3.6697
+Norway,Northern Europe,5.3413,0.9694,41363.6001,3.9088,8.1081
+Poland,Eastern Europe,5.8352,0.843,54162.6806,3.3601,3.1873
+Portugal,Southern Europe,6.1847,0.6743,74246.7375,2.7505,0.3846
+Spain,Southern Europe,6.2431,0.6502,78051.4021,2.633,0.3968
+Sweden,Northern Europe,5.5285,0.9486,44838.5337,3.8055,3.6585

@@ -1,13 +1,13 @@
 {
   "cleaning": {
-    "raw_rows": 18120,
-    "clean_rows": 18000,
-    "duplicates_removed": 120,
+    "raw_rows": 2560,
+    "clean_rows": 2500,
+    "duplicates_removed": 60,
     "missing_values_before_imputation": {
-      "tread_depth_mm": 216,
-      "wear_rate_mm_per_1000km": 216,
-      "price_eur": 287,
-      "wet_grip_score": 216
+      "td_current_mm": 26,
+      "wear_rate_mm_10000km": 24,
+      "remaining_life_km": 26,
+      "price_eur": 36
     },
     "countries": 10,
     "regions": 4,
@@ -17,79 +17,137 @@
   "hypothesis_tests": [
     {
       "test": "Shapiro-Wilk",
-      "question": "Is wear rate normally distributed?",
-      "statistic": 0.97403,
-      "p_value": 3.1438802e-29,
+      "question": "Wear-rate normality",
+      "statistic": 0.95534,
+      "p_value": 0.0,
       "decision": "non-normal"
     },
     {
-      "test": "Welch t-test",
-      "question": "Summer vs winter wear rate mean",
-      "statistic": 1.20503,
-      "p_value": 0.22822224,
-      "decision": "not different"
+      "test": "Kolmogorov-Smirnov",
+      "question": "Wear-rate normality vs standard normal",
+      "statistic": 0.0265,
+      "p_value": 0.05867594,
+      "decision": "normal"
     },
     {
-      "test": "Mann-Whitney U",
-      "question": "Summer vs winter wear distribution",
-      "statistic": 16624652.0,
-      "p_value": 0.20040468,
-      "decision": "not different"
+      "test": "Levene",
+      "question": "Equal variance premium vs budget",
+      "statistic": 31.70927,
+      "p_value": 2e-08,
+      "decision": "different variance"
+    },
+    {
+      "test": "t-test",
+      "question": "Premium vs budget wear-rate mean",
+      "statistic": -16.40643,
+      "p_value": 0.0,
+      "decision": "different"
+    },
+    {
+      "test": "Welch t-test",
+      "question": "Premium vs budget wear-rate mean",
+      "statistic": -12.83882,
+      "p_value": 0.0,
+      "decision": "different"
     },
     {
       "test": "ANOVA",
-      "question": "Wear rate mean across European regions",
-      "statistic": 120.55089,
-      "p_value": 2.6593961e-77,
+      "question": "Wear-rate means across regions",
+      "statistic": 217.74353,
+      "p_value": 0.0,
+      "decision": "different"
+    },
+    {
+      "test": "Mann-Whitney",
+      "question": "Premium vs budget distribution",
+      "statistic": 94672.0,
+      "p_value": 0.0,
       "decision": "different"
     },
     {
       "test": "Kruskal-Wallis",
-      "question": "Wear rate distribution across European regions",
-      "statistic": 359.69769,
-      "p_value": 1.18509e-77,
+      "question": "Wear-rate distributions across regions",
+      "statistic": 561.54786,
+      "p_value": 0.0,
       "decision": "different"
     },
     {
-      "test": "Welch t-test",
-      "question": "Premium vs value brand projected life",
-      "statistic": 8.89032,
-      "p_value": 6.8708242e-19,
-      "decision": "different"
+      "test": "Chi-square",
+      "question": "Region vs risk class association",
+      "statistic": 42.71312,
+      "p_value": 2.43e-06,
+      "decision": "associated"
+    },
+    {
+      "test": "Pearson",
+      "question": "Mileage vs current tread depth",
+      "statistic": -0.79626,
+      "p_value": 0.0,
+      "decision": "correlated"
+    },
+    {
+      "test": "Spearman",
+      "question": "Mileage vs current tread depth rank",
+      "statistic": -0.77571,
+      "p_value": 0.0,
+      "decision": "correlated"
     }
   ],
   "machine_learning": {
-    "classification_high_wear_risk": {
-      "accuracy": 0.9806,
-      "f1": 0.9859,
-      "roc_auc": 0.9985
-    },
-    "regression_projected_life_km": {
-      "mae": 2798.83,
-      "r2": 0.7541
+    "regression": [
+      {
+        "model": "Ridge",
+        "mae": 5517.74,
+        "r2": 0.9223
+      },
+      {
+        "model": "Random Forest Regressor",
+        "mae": 733.87,
+        "r2": 0.9968
+      },
+      {
+        "model": "Gradient Boosting Regressor",
+        "mae": 1129.42,
+        "r2": 0.9965
+      }
+    ],
+    "classification": [
+      {
+        "model": "Logistic Regression",
+        "accuracy": 0.996,
+        "f1": 0.9231,
+        "roc_auc": 0.9772
+      },
+      {
+        "model": "Random Forest Classifier",
+        "accuracy": 0.992,
+        "f1": 0.8333,
+        "roc_auc": 0.9999
+      }
+    ],
+    "clustering": {
+      "kmeans_silhouette": 0.1736,
+      "kmeans_davies_bouldin": 1.5703,
+      "dbscan_clusters": 1
     }
   },
   "patterns": {
-    "strongest_correlations_with_wear_rate": {
-      "projected_life_km": 0.9153,
-      "cost_per_km": 0.7658,
-      "road_roughness": 0.2158,
-      "tread_depth_mm": 0.1677,
-      "rain_index": 0.1595
+    "highest_risk_region": {
+      "country": "Norway",
+      "region": "Northern Europe",
+      "td_avg_mm": 5.3413,
+      "wear_rate_avg": 0.9694,
+      "remaining_life_avg_km": 41363.6001,
+      "cost_per_1000km_avg": 3.9088,
+      "risk_share_pct": 8.1081
     },
-    "highest_risk_country": {
-      "country": "Sweden",
-      "europe_region": "Northern Europe",
-      "high_risk_share": 71.42,
-      "avg_wear_rate": 0.20750220055710306,
-      "avg_cost_per_km": 0.00465142061281337
-    },
-    "best_value_brand": {
-      "brand": "Michelin",
-      "avg_projected_life_km": 34883.995638901004,
-      "avg_cost_per_km": 0.004520902747492368,
-      "avg_wear_rate": 0.1952212821631051,
-      "high_risk_share": 66.81
+    "best_recommended_tyre": {
+      "tyre_id": "TYR00216",
+      "brand": "Hankook",
+      "model": "HAN-Grip-622",
+      "tyre_size": "205/55 R16",
+      "country": "France",
+      "recommended_tyre_score": 0.9872200000000001
     }
   }
 }

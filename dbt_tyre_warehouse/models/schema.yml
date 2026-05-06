@@ -1,0 +1,26 @@
+version: 2
+
+seeds:
+  - name: sample_tyre_dataset
+    description: Realistic simulated tyre dataset used as the dbt seed.
+    columns:
+      - name: tyre_id
+        tests: [not_null, unique]
+      - name: risk_class
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['low', 'medium', 'high', 'critical']
+      - name: season_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['summer', 'winter', 'all-season']
+
+models:
+  - name: mart_tread_depth_analysis
+    description: Tread depth and wear-rate mart by tyre and geography.
+  - name: mart_tyre_performance
+    description: Brand and tyre size performance mart.
+  - name: mart_ml_features
+    description: Feature table for ML experiments.

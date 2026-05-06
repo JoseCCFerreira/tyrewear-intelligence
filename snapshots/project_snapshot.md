@@ -1,10 +1,10 @@
 # TyreWear Intelligence Snapshot
 
-Generated at: `2026-05-05T22:16:44`
+Generated at: `2026-05-06T10:45:56`
 
 ## Repository
 
-- Latest commit: `2507c8b feat: add full tyre analytics pipeline`
+- Latest commit: `9f1db62 docs: refresh full analytics snapshot`
 - Remote: `origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)
 origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 
@@ -15,25 +15,30 @@ origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 | `index.html` | 12958 bytes |
 | `style.css` | 16355 bytes |
 | `technical_support.html` | 20737 bytes |
-| `README.md` | 1780 bytes |
-| `requirements.txt` | 111 bytes |
-| `app.py` | 11385 bytes |
-| `scripts/generate_tyre_data.py` | 7430 bytes |
-| `scripts/analyze_tyre_data.py` | 12848 bytes |
-| `scripts/run_full_pipeline.py` | 543 bytes |
-| `scripts/test_deep_learning.py` | 5022 bytes |
-| `scripts/create_snapshot.py` | 3186 bytes |
-| `data/raw/tyrewear_europe_raw.csv` | 3547570 bytes |
-| `data/processed/tyrewear_europe_clean.csv` | 3529339 bytes |
-| `data/processed/tyrewear_europe_monthly_resampled.csv` | 62226 bytes |
-| `data/processed/tyrewear_europe_annual_country.csv` | 5005 bytes |
-| `data/outputs/hypothesis_tests.csv` | 542 bytes |
-| `data/outputs/analysis_summary.json` | 2469 bytes |
-| `data/outputs/tyre_clusters.csv` | 1397458 bytes |
-| `data/outputs/cluster_summary.csv` | 276 bytes |
+| `README.md` | 7344 bytes |
+| `requirements.txt` | 123 bytes |
+| `app.py` | 197 bytes |
+| `src/tyrewear_app.py` | 10938 bytes |
+| `scripts/generate_tyre_data.py` | 9415 bytes |
+| `scripts/analyze_tyre_data.py` | 15937 bytes |
+| `scripts/setup_sqlite.py` | 917 bytes |
+| `scripts/setup_duckdb.py` | 2353 bytes |
+| `scripts/run_full_pipeline.py` | 597 bytes |
+| `scripts/test_deep_learning.py` | 5077 bytes |
+| `scripts/create_snapshot.py` | 3371 bytes |
+| `data/raw/sample_tyre_dataset.csv` | 695529 bytes |
+| `data/processed/tyrewear.sqlite` | 937984 bytes |
+| `data/processed/tyrewear.duckdb` | 5255168 bytes |
+| `data/processed/tyrewear_europe_clean.csv` | 825363 bytes |
+| `data/processed/tyrewear_europe_monthly_resampled.csv` | 56497 bytes |
+| `data/processed/tyrewear_europe_annual_country.csv` | 4885 bytes |
+| `data/outputs/hypothesis_tests.csv` | 798 bytes |
+| `data/outputs/analysis_summary.json` | 3650 bytes |
+| `data/outputs/tyre_clusters.csv` | 450790 bytes |
+| `data/outputs/cluster_summary.csv` | 283 bytes |
 
 
 ## Deep Learning Smoke Tests
 
-- pytorch: passed | MSE 0.016865 | version 2.2.2
-- tensorflow: passed | MSE 0.004775 | version 2.16.1
+- pytorch: passed | MSE 0.002565 | version 2.2.2
+- tensorflow: passed | MSE 5e-06 | version 2.16.1

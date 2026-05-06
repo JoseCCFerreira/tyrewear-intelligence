@@ -2,6 +2,7 @@ numpy>=1.26
 pandas>=2.2
 scikit-learn>=1.4
 scipy>=1.12
+duckdb>=1.0
 torch>=2.2
 tensorflow>=2.16
 streamlit>=1.35

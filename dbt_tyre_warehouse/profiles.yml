@@ -1,0 +1,7 @@
+tyrewear_intelligence:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/processed/tyrewear.duckdb
+      threads: 4

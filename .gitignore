@@ -5,3 +5,7 @@ __pycache__/
 .pytest_cache/
 .streamlit/
 *.log
+dbt_tyre_warehouse/target/
+dbt_tyre_warehouse/logs/
+dbt_tyre_warehouse/.user.yml
+.venv-dbt/
