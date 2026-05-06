@@ -1,10 +1,10 @@
 # TyreWear Intelligence Snapshot
 
-Generated at: `2026-05-06T21:02:05`
+Generated at: `2026-05-06T21:53:17`
 
 ## Repository
 
-- Latest commit: `8b83846 fix: avoid statsmodels trendline in tread depth chart`
+- Latest commit: `d8b2ab9 feat: add tyre size intelligence and real reference data`
 - Remote: `origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)
 origin	https://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)`
 
