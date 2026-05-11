@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TyreWear Intelligence Presentation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero presentation-hero">
+    <nav>
+      <strong>TyreWear Intelligence</strong>
+      <a href="index.html">Documentation</a>
+      <a href="../index.html">Landing</a>
+      <a href="https://github.com/JoseCCFerreira/tyrewear-intelligence">GitHub</a>
+    </nav>
+    <section>
+      <p class="eyebrow">Project presentation</p>
+      <h1>From tyre data to a defensible decision.</h1>
+      <p>TyreWear Intelligence explains, compares and recommends tyres using tread depth, wear rate, cost, safety, geography, statistics, clustering and machine learning.</p>
+    </section>
+  </header>
+  <main>
+    <section>
+      <h2>Objective</h2>
+      <p>The project helps a user move beyond price-only tyre selection. It turns tyre measurements and product attributes into evidence about durability, risk, cost per kilometre and expected remaining life.</p>
+      <div class="cards cards-three">
+        <article><h3>Understand</h3><p>Explore tread depth, wear, cost, risk and dimension patterns.</p></article>
+        <article><h3>Compare</h3><p>Rank brands, tyre sizes, regions and candidate tyres under the same rules.</p></article>
+        <article><h3>Decide</h3><p>Use a weighted decision score and export the analysis for review.</p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Process</h2>
+      <div class="flow">
+        <span>Reference data</span>
+        <span>Raw panel</span>
+        <span>Cleaning</span>
+        <span>SQLite</span>
+        <span>DuckDB</span>
+        <span>dbt marts</span>
+        <span>Statistics</span>
+        <span>ML</span>
+        <span>Decision</span>
+      </div>
+      <p>The pipeline creates a realistic measurement dataset, adds an official NHTSA UTQGS reference layer, stores data locally, builds analytics marts and exposes the results through Streamlit and static HTML documentation.</p>
+    </section>
+    <section>
+      <h2>What The App Does</h2>
+      <div class="cards cards-three">
+        <article><h3>Analysis</h3><p>KPIs, distributions, tread-depth views, geographic maps, dimension heatmaps and monthly patterns.</p></article>
+        <article><h3>Evidence</h3><p>Hypothesis tests, p-values, correlations, clustering metrics and model comparison.</p></article>
+        <article><h3>Recommendation</h3><p>Weighted scoring by durability, safety, cost, comfort, efficiency and risk.</p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Decision Center</h2>
+      <p>The Decision Center lets the user choose country, vehicle type, tyre size, budget and business priorities. The app recalculates a decision score and explains the best candidate with supporting metrics.</p>
+      <ul class="clean-list">
+        <li>Durability: remaining useful life and wear behaviour.</li>
+        <li>Safety: wet grip and risk class.</li>
+        <li>Economics: price and cost per 1000 km.</li>
+        <li>Comfort and efficiency: noise, fuel efficiency and rolling resistance.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Exports</h2>
+      <p>The analysis can be exported directly from Streamlit:</p>
+      <div class="cards cards-three">
+        <article><h3>CSV</h3><p>For Excel, BI tools or additional modelling.</p></article>
+        <article><h3>JSON</h3><p>For reproducible decision records and integration.</p></article>
+        <article><h3>HTML Report</h3><p>For sharing the recommendation and top candidates with non-technical stakeholders.</p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Important Data Note</h2>
+      <p>The NHTSA UTQGS layer is official real reference data. The repeated tread-depth-by-mileage panel is realistic simulated data because public tyre-level wear measurements by mileage, geography and usage profile are not generally open.</p>
+    </section>
+    <section class="cta">
+      <h2>Open The Project</h2>
+      <p>Run the Streamlit app, review the documentation and export a decision report from the Decision Center.</p>
+      <a href="http://localhost:8580">Open Streamlit App</a>
+    </section>
+  </main>
+</body>
+</html>

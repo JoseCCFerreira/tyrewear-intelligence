@@ -1,9 +1,9 @@
 {
   "project": "TyreWear Intelligence",
-  "created_at": "2026-05-06T21:53:17",
+  "created_at": "2026-05-11T09:44:32",
   "repository": {
-    "git_status": "M data/processed/tyrewear.duckdb\n M data/processed/tyrewear.sqlite",
-    "latest_commit": "d8b2ab9 feat: add tyre size intelligence and real reference data",
+    "git_status": "M README.md\n M docs/12_streamlit_app_guide.md\n M docs_html/index.html\n M docs_html/style.css\n M scripts/create_snapshot.py\n M src/tyrewear_app.py\n?? docs_html/presentation.html\n?? pages/15_Decision_Center_Export.py",
+    "latest_commit": "84f7ecb chore: refresh tyrewear generated artifacts",
     "remote": "origin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (fetch)\norigin\thttps://github.com/JoseCCFerreira/tyrewear-intelligence.git (push)"
   },
   "files": [
@@ -20,8 +20,20 @@
       "size_bytes": 20737
     },
     {
+      "path": "docs_html/index.html",
+      "size_bytes": 5685
+    },
+    {
+      "path": "docs_html/presentation.html",
+      "size_bytes": 4313
+    },
+    {
+      "path": "docs_html/style.css",
+      "size_bytes": 1926
+    },
+    {
       "path": "README.md",
-      "size_bytes": 8473
+      "size_bytes": 8550
     },
     {
       "path": "requirements.txt",
@@ -33,7 +45,7 @@
     },
     {
       "path": "src/tyrewear_app.py",
-      "size_bytes": 17537
+      "size_bytes": 26218
     },
     {
       "path": "scripts/generate_tyre_data.py",
@@ -65,7 +77,7 @@
     },
     {
       "path": "scripts/create_snapshot.py",
-      "size_bytes": 3631
+      "size_bytes": 3733
     },
     {
       "path": "data/raw/sample_tyre_dataset.csv",
@@ -85,7 +97,7 @@
     },
     {
       "path": "data/processed/tyrewear.duckdb",
-      "size_bytes": 5779456
+      "size_bytes": 6041600
     },
     {
       "path": "data/processed/tyrewear_europe_clean.csv",

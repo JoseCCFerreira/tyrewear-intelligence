@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from html import escape
 from pathlib import Path
 
 import numpy as np
@@ -297,6 +298,190 @@ def real_data_reference() -> None:
         )
         st.dataframe(utqg, width="stretch", hide_index=True)
     st.info("The official reference layer is real. The tread-depth-by-mileage panel remains simulated because repeated TD measurements by tyre, km and geography are not generally published as open data.")
+
+
+def minmax_score(series: pd.Series, higher_is_better: bool = True) -> pd.Series:
+    numeric = pd.to_numeric(series, errors="coerce")
+    spread = numeric.max() - numeric.min()
+    if pd.isna(spread) or spread == 0:
+        return pd.Series(0.5, index=series.index)
+    score = (numeric - numeric.min()) / spread
+    return score if higher_is_better else 1 - score
+
+
+def decision_report_html(best: pd.Series, candidates: pd.DataFrame, weights: dict[str, float], filters: dict[str, object]) -> str:
+    rows = []
+    for _, item in candidates.head(10).iterrows():
+        rows.append(
+            "<tr>"
+            f"<td>{escape(str(item['brand']))}</td>"
+            f"<td>{escape(str(item['model']))}</td>"
+            f"<td>{escape(str(item['tyre_size']))}</td>"
+            f"<td>{round(float(item['decision_score']), 3)}</td>"
+            f"<td>{int(item['remaining_life_km'])}</td>"
+            f"<td>{round(float(item['cost_per_1000km']), 2)}</td>"
+            f"<td>{escape(str(item['risk_class']))}</td>"
+            "</tr>"
+        )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TyreWear Decision Report</title>
+  <style>
+    body{{font-family:Arial,sans-serif;margin:0;background:#f6f9fb;color:#111827;line-height:1.55}}
+    main{{max-width:1050px;margin:auto;padding:42px 22px}}
+    h1{{font-size:42px;letter-spacing:-.04em;margin:0 0 8px}} h2{{margin-top:34px}}
+    .card{{background:#fff;border:1px solid #dce9ee;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 14px 40px rgba(0,40,60,.08)}}
+    .grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}} .metric{{background:#ecf8fb;border-radius:10px;padding:14px}}
+    table{{width:100%;border-collapse:collapse;background:#fff}} th,td{{padding:10px;border-bottom:1px solid #e5edf1;text-align:left}} th{{font-size:12px;text-transform:uppercase;color:#65737f}}
+    @media(max-width:800px){{.grid{{grid-template-columns:1fr}}}}
+  </style>
+</head>
+<body>
+<main>
+  <p>TyreWear Intelligence</p>
+  <h1>Decision Report</h1>
+  <div class="card">
+    <h2>Recommended option</h2>
+    <p><strong>{escape(str(best['brand']))} {escape(str(best['model']))}</strong> in size <strong>{escape(str(best['tyre_size']))}</strong>.</p>
+    <div class="grid">
+      <div class="metric"><b>Decision score</b><br>{round(float(best['decision_score']), 3)}</div>
+      <div class="metric"><b>Remaining life</b><br>{int(best['remaining_life_km']):,} km</div>
+      <div class="metric"><b>Cost / 1000 km</b><br>{round(float(best['cost_per_1000km']), 2)} EUR</div>
+      <div class="metric"><b>Risk</b><br>{escape(str(best['risk_class']))}</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Decision logic</h2>
+    <p>The score combines durability, safety, cost, efficiency, comfort and risk using the selected business weights.</p>
+    <p><strong>Filters:</strong> {escape(json.dumps(filters, ensure_ascii=False))}</p>
+    <p><strong>Weights:</strong> {escape(json.dumps(weights, ensure_ascii=False))}</p>
+  </div>
+  <h2>Top candidates</h2>
+  <table>
+    <thead><tr><th>Brand</th><th>Model</th><th>Size</th><th>Score</th><th>Life km</th><th>Cost</th><th>Risk</th></tr></thead>
+    <tbody>{''.join(rows)}</tbody>
+  </table>
+</main>
+</body>
+</html>"""
+
+
+def decision_center() -> None:
+    recs = load_data()["recommendations"].copy()
+    st.title("Decision Center & Export")
+    st.caption("Turn the analysis into an explicit tyre decision, then export the evidence.")
+    if recs.empty:
+        st.warning("Recommendation data is not available. Run the pipeline first.")
+        return
+
+    left, right = st.columns([0.35, 0.65])
+    with left:
+        st.subheader("Decision profile")
+        countries = ["All"] + sorted(recs["country"].dropna().unique())
+        vehicles = ["All"] + sorted(recs["vehicle_type"].dropna().unique())
+        sizes = ["All"] + sorted(recs["tyre_size"].dropna().unique())
+        country = st.selectbox("Country", countries)
+        vehicle = st.selectbox("Vehicle type", vehicles)
+        tyre_size = st.selectbox("Tyre size", sizes)
+        budget = st.slider("Maximum price EUR", 50, 360, 220)
+        durability = st.slider("Durability weight", 0, 100, 30)
+        safety = st.slider("Safety weight", 0, 100, 25)
+        cost = st.slider("Cost weight", 0, 100, 20)
+        efficiency = st.slider("Efficiency weight", 0, 100, 10)
+        comfort = st.slider("Comfort weight", 0, 100, 10)
+        risk = st.slider("Risk reduction weight", 0, 100, 5)
+
+    candidates = recs[recs["price_eur"] <= budget].copy()
+    if country != "All":
+        candidates = candidates[candidates["country"] == country]
+    if vehicle != "All":
+        candidates = candidates[candidates["vehicle_type"] == vehicle]
+    if tyre_size != "All":
+        candidates = candidates[candidates["tyre_size"] == tyre_size]
+    if candidates.empty:
+        st.warning("No tyre candidates match the current decision profile.")
+        return
+
+    raw_weights = {
+        "durability": durability,
+        "safety": safety,
+        "cost": cost,
+        "efficiency": efficiency,
+        "comfort": comfort,
+        "risk": risk,
+    }
+    total_weight = sum(raw_weights.values()) or 1
+    weights = {key: value / total_weight for key, value in raw_weights.items()}
+    risk_penalty = candidates["risk_class"].map({"low": 1.0, "medium": 0.66, "high": 0.33, "critical": 0.0}).fillna(0.5)
+    candidates["decision_score"] = (
+        minmax_score(candidates["remaining_life_km"]) * weights["durability"]
+        + candidates["safety_score"].fillna(0.5) * weights["safety"]
+        + minmax_score(candidates["cost_per_1000km"], higher_is_better=False) * weights["cost"]
+        + candidates["efficiency_score"].fillna(0.5) * weights["efficiency"]
+        + candidates["comfort_score"].fillna(0.5) * weights["comfort"]
+        + risk_penalty * weights["risk"]
+    )
+    candidates = candidates.sort_values("decision_score", ascending=False)
+    best = candidates.iloc[0]
+
+    with right:
+        st.subheader("Recommended decision")
+        metrics = st.columns(5)
+        metrics[0].metric("Best tyre", f"{best['brand']} {best['model']}")
+        metrics[1].metric("Size", best["tyre_size"])
+        metrics[2].metric("Decision score", round(float(best["decision_score"]), 3))
+        metrics[3].metric("Life", f"{int(best['remaining_life_km']):,} km")
+        metrics[4].metric("Cost", f"{round(float(best['cost_per_1000km']), 2)} EUR")
+        st.plotly_chart(
+            px.bar(
+                candidates.head(12),
+                x="model",
+                y="decision_score",
+                color="risk_class",
+                hover_data=["brand", "tyre_size", "remaining_life_km", "cost_per_1000km", "price_eur"],
+                title="Top decision candidates",
+            ),
+            width="stretch",
+        )
+        st.plotly_chart(
+            px.scatter(
+                candidates.head(80),
+                x="cost_per_1000km",
+                y="remaining_life_km",
+                color="risk_class",
+                size="decision_score",
+                hover_data=["brand", "model", "tyre_size", "price_eur"],
+                title="Decision frontier: cost vs remaining life",
+            ),
+            width="stretch",
+        )
+
+    export_cols = [
+        "tyre_id", "brand", "model", "tyre_size", "country", "vehicle_type", "price_eur",
+        "remaining_life_km", "cost_per_1000km", "risk_class", "decision_score",
+        "safety_score", "durability_score", "cost_score", "comfort_score", "efficiency_score",
+    ]
+    export_df = candidates[export_cols].head(100)
+    filters = {"country": country, "vehicle_type": vehicle, "tyre_size": tyre_size, "max_price_eur": budget}
+    top_records = json.loads(export_df.head(20).to_json(orient="records"))
+    best_record = json.loads(best[export_cols].to_frame().T.to_json(orient="records"))[0]
+    report = {
+        "recommended_tyre": best_record,
+        "filters": filters,
+        "weights": weights,
+        "top_candidates": top_records,
+    }
+    html_report = decision_report_html(best, export_df, weights, filters)
+
+    st.subheader("Export analysis")
+    st.dataframe(export_df, width="stretch", hide_index=True)
+    d1, d2, d3 = st.columns(3)
+    d1.download_button("Download CSV", export_df.to_csv(index=False), "tyrewear_decision_analysis.csv", "text/csv")
+    d2.download_button("Download JSON", json.dumps(report, indent=2), "tyrewear_decision_analysis.json", "application/json")
+    d3.download_button("Download HTML report", html_report, "tyrewear_decision_report.html", "text/html")
 
 
 def deep_learning() -> None:

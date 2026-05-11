@@ -13,10 +13,18 @@ Pages:
 9. Deep Learning
 10. Geo Map
 11. Tyre Recommendation
-12. AI Advisor
-13. Role-Based Skills Map
-14. Methodology
-15. Real Data Reference
+12. Decision Center & Export
+13. AI Advisor
+14. Role-Based Skills Map
+15. Methodology
+16. Real Data Reference
+
+The Decision Center supports:
+
+- business-weighted tyre scoring
+- filters by country, vehicle type, tyre size and budget
+- top-candidate comparison
+- export to CSV, JSON and HTML report
 
 Run with:
 
